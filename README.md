@@ -5,6 +5,17 @@
 [![GitHub release](https://img.shields.io/github/release/kaizendorks/terraform-cloud-exporter.svg)](https://github.com//kaizendorks/terraform-cloud-exporter/releases/latest)
 [![Docker Release](https://github.com/kaizendorks/terraform-cloud-exporter/workflows/Docker%20Release/badge.svg)](https://github.com//kaizendorks/terraform-cloud-exporter/actions?workflow=Docker%20Release)
 
+##  TODO
+
+
+- number of teams
+- number of policies with policy description 
+- histograms for:
+    - workspaces
+    - teams
+- audit log exporter ?
+- add tests for : projects
+
 
 ## Sample Dashboard
 | ![Sample Dashboard](sample-dasbhoard.png?raw=true "Sample Dashboard") |

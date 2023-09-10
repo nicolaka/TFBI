@@ -12,7 +12,7 @@ rule_files:
 scrape_configs:
   - job_name: 'tf_exporter'
 
-    # Override the global default and scrape targets from this job every 10 seconds.
-    scrape_interval: 10s
+    # Override the global default and scrape targets from this job every 30 seconds.
+    scrape_interval: 30s
     static_configs:
     - targets: ['exporter:9100']

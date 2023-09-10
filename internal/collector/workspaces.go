@@ -28,7 +28,7 @@ var (
 	WorkspacesInfo = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, workspacesSubsystem, "info"),
 		"Information about existing workspaces",
-		[]string{"id", "name", "organization", "terraform_version", "created_at", "environment", "current_run", "current_run_status", "current_run_created_at"}, nil,
+		[]string{"id", "name", "organization", "terraform_version", "created_at", "environment", "current_run", "current_run_status", "current_run_created_at", "project"}, nil,
 	)
 )
 
@@ -55,19 +55,24 @@ func (ScrapeWorkspaces) Version() string {
 }
 
 func getWorkspacesListPage(ctx context.Context, page int, organization string, config *setup.Config, ch chan<- prometheus.Metric) error {
-	include := "current_run"
-	workspacesList, err := config.Client.Workspaces.List(ctx, organization, tfe.WorkspaceListOptions{
+	workspacesList, err := config.Client.Workspaces.List(ctx, organization, &tfe.WorkspaceListOptions{
 		ListOptions: tfe.ListOptions{
 			PageSize:   pageSize,
 			PageNumber: page,
 		},
-		Include: &include,
+		Include: []tfe.WSIncludeOpt{
+			// go-tfe bug 764 "project",
+			"current_run",
+			"organization",
+		},
 	})
 	if err != nil {
 		return fmt.Errorf("%v, (organization=%s, page=%d)", err, organization, page)
 	}
 
 	for _, w := range workspacesList.Items {
+		fmt.Println(w.Project.ID)
+		fmt.Println(w.Project.Name)
 		select {
 		case ch <- prometheus.MustNewConstMetric(
 			WorkspacesInfo,
@@ -82,6 +87,7 @@ func getWorkspacesListPage(ctx context.Context, page int, organization string, c
 			getCurrentRunID(w.CurrentRun),
 			getCurrentRunStatus(w.CurrentRun),
 			getCurrentRunCreatedAt(w.CurrentRun),
+			w.Project.ID,
 		):
 		case <-ctx.Done():
 			return ctx.Err()
@@ -99,9 +105,7 @@ func (ScrapeWorkspaces) Scrape(ctx context.Context, config *setup.Config, ch cha
 		g.Go(func() error {
 			// TODO: Dummy list call to get the number of workspaces.
 			//       Investigate if there is a better way to get the workspace count.
-			workspacesList, err := config.Client.Workspaces.List(ctx, name, tfe.WorkspaceListOptions{
-				ListOptions: tfe.ListOptions{PageSize: pageSize},
-			})
+			workspacesList, err := config.Client.Workspaces.List(ctx, name, nil)
 			if err != nil {
 				return fmt.Errorf("%v, organization=%s", err, name)
 			}

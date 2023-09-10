@@ -1,4 +1,4 @@
-FROM golang:1.15-alpine AS dev
+FROM golang:1.20-alpine AS dev
 
 RUN apk add --no-cache \
     g++ \
@@ -8,7 +8,7 @@ WORKDIR /go/src/github.com/kaizendorks/terraform-cloud-exporter
 
 ENTRYPOINT ["./hot-reload.sh"]
 
-FROM golang:1.15-alpine AS build
+FROM golang:1.20-alpine AS build
 
 WORKDIR /go/src/github.com/kaizendorks/terraform-cloud-exporter
 
@@ -19,7 +19,7 @@ COPY . .
 RUN go build \
     -ldflags="-X main.Version=${tag} -X main.Commit=${sha} -X main.BuildDate=$(date '+%Y%m%d-%H:%M:%S')"
 
-FROM alpine:3 AS prod
+FROM alpine:3.18 AS prod
 
 COPY --from=build /go/src/github.com/kaizendorks/terraform-cloud-exporter/terraform-cloud-exporter /bin/terraform-cloud-exporter
 
