@@ -53,8 +53,6 @@ func (ScrapeProjects) Scrape(ctx context.Context, config *setup.Config, ch chan<
 		g.Go(func() error {
 			projectList, err := config.Client.Projects.List(ctx, name, nil)
 			for _, p := range projectList.Items {
-					fmt.Println(p.Name)
-					fmt.Println(p.ID)
 					select {
 					case ch <- prometheus.MustNewConstMetric(
 						ProjectsInfo,

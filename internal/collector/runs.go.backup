@@ -1,0 +1,87 @@
+package collector
+
+import (
+	"context"
+	"strconv"
+	"fmt"
+
+	"golang.org/x/sync/errgroup"
+
+	"github.com/kaizendorks/terraform-cloud-exporter/internal/setup"
+
+	"github.com/prometheus/client_golang/prometheus"
+)
+
+
+const (
+	// runs is the Metric subsystem we use.
+	runsSubsystem = "runs"
+)
+
+// Metric descriptors.
+var (
+	RunsInfo = prometheus.NewDesc(
+		prometheus.BuildFQName(namespace, runsSubsystem, "info"),
+		"Information about existing runs",
+		[]string{"id","created_at","has_changes","is_destroy","message","plan_only","refresh_only","source","status"}, nil,
+	)
+)
+
+// ScrapeRuns scrapes metrics about the runs.
+type ScrapeRuns struct{}
+
+func init() {
+	Scrapers = append(Scrapers, ScrapeRuns{})
+}
+
+// Name of the Scraper. Should be unique.
+func (ScrapeRuns) Name() string {
+	return runsSubsystem
+}
+
+// Help describes the role of the Scraper.
+func (ScrapeRuns) Help() string {
+	return "Scrape information from the Runs API: https://www.terraform.io/docs/cloud/api/runs.html"
+}
+
+// Version of Terraform Cloud/Enterprise API from which scraper is available.
+func (ScrapeRuns) Version() string {
+	return "v2"
+}
+
+// []string{"id","created_at","has_changes","is_destroy","message","plan_only","refresh_only","source","status"}, nil,
+func (ScrapeRuns) Scrape(ctx context.Context, config *setup.Config, ch chan<- prometheus.Metric) error {
+	g, ctx := errgroup.WithContext(ctx)
+	for _, name := range config.Organizations {
+		g.Go(func() error {
+			runsList, err := config.Client.Runs.List(ctx, name, nil)
+			for _, r := range runsList.Items {
+					select {
+					case ch <- prometheus.MustNewConstMetric(
+						RunsInfo,
+						prometheus.GaugeValue,
+						1,
+						r.ID,
+						r.CreatedAt.String(),
+						strconv.FormatBool(r.HasChanges),
+						strconv.FormatBool(r.IsDestroy),
+						r.Message,
+						strconv.FormatBool(r.PlanOnly),
+						strconv.FormatBool(r.RefreshOnly),
+						string(r.Source),
+						string(r.Status),
+					):
+					case <-ctx.Done():
+						return ctx.Err()
+					}
+			}
+			if err != nil {
+				return fmt.Errorf("%v, organization=%s", err, name)
+			}
+
+			return nil
+		})
+		
+	}
+	return g.Wait()	
+}

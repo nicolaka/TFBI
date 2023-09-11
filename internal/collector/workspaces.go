@@ -2,6 +2,7 @@ package collector
 
 import (
 	"context"
+	"strconv"
 	"fmt"
 
 	"golang.org/x/sync/errgroup"
@@ -28,7 +29,7 @@ var (
 	WorkspacesInfo = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, workspacesSubsystem, "info"),
 		"Information about existing workspaces",
-		[]string{"id", "name", "organization", "terraform_version", "created_at", "environment", "current_run", "current_run_status", "current_run_created_at", "project"}, nil,
+		[]string{"id", "name", "organization", "terraform_version", "created_at", "environment", "current_run", "current_run_status", "current_run_created_at", "project", "assessments_enabled", "description", "resource_count", "policy_check_failures",  "run_failures", "runs_count" }, nil,
 	)
 )
 
@@ -71,8 +72,6 @@ func getWorkspacesListPage(ctx context.Context, page int, organization string, c
 	}
 
 	for _, w := range workspacesList.Items {
-		fmt.Println(w.Project.ID)
-		fmt.Println(w.Project.Name)
 		select {
 		case ch <- prometheus.MustNewConstMetric(
 			WorkspacesInfo,
@@ -88,6 +87,12 @@ func getWorkspacesListPage(ctx context.Context, page int, organization string, c
 			getCurrentRunStatus(w.CurrentRun),
 			getCurrentRunCreatedAt(w.CurrentRun),
 			w.Project.ID,
+			strconv.FormatBool(w.AssessmentsEnabled),
+			w.Description,
+			strconv.Itoa(w.ResourceCount),
+			strconv.Itoa(w.PolicyCheckFailures),
+			strconv.Itoa(w.RunFailures),
+			strconv.Itoa(w.RunsCount),
 		):
 		case <-ctx.Done():
 			return ctx.Err()

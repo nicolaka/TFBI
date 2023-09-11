@@ -1,94 +1,48 @@
-# Terraform Cloud/Enterprise Exporter
->Prometheus exporter for Terraform Cloud/Enterprise metrics.
+# Terraform Business Insights (TFBI) 
+> Business, Operational, and Adoption Insights for Terraform Cloud & Enterprise 
 
-[![Go Test](https://github.com/kaizendorks/terraform-cloud-exporter/workflows/Go%20Test/badge.svg)](https://github.com//kaizendorks/terraform-cloud-exporter/actions?workflow=Go%20Test)
-[![GitHub release](https://img.shields.io/github/release/kaizendorks/terraform-cloud-exporter.svg)](https://github.com//kaizendorks/terraform-cloud-exporter/releases/latest)
-[![Docker Release](https://github.com/kaizendorks/terraform-cloud-exporter/workflows/Docker%20Release/badge.svg)](https://github.com//kaizendorks/terraform-cloud-exporter/actions?workflow=Docker%20Release)
+## Overview
 
-##  TODO
+Terraform Cloud Business Insights (TFBI) is a tool that provides business, operational, and adoption insights for Terraform Cloud operators. It implements both custom Prometheus collectors and metrics to query the Terraform Cloud API using [go-tfe](https://pkg.go.dev/github.com/hashicorp/go-tfe) Go libary and a Grafana dashboard to easily explore common business, operational, and adoption metrics. 
 
+![dashboard](img/dashboard_1.png)
+![dashboard](img/dashboard_2.png)
 
-- number of teams
-- number of policies with policy description 
-- histograms for:
-    - workspaces
-    - teams
-- audit log exporter ?
-- add tests for : projects
+## Metrics
 
+Summary of metrics collected:
 
-## Sample Dashboard
-| ![Sample Dashboard](sample-dasbhoard.png?raw=true "Sample Dashboard") |
-|:--:|
-| *Source code:* `grafana/dashboards/general.json` |
+- Organization
+- Projects
+- Workspaces
+- Runs
+- Policies
+
 
 ## Usage
-1. Create API Token:
-    * For Terraform Cloud open: `https://app.terraform.io/app/settings/tokens?source=terraform-login`
-    * For Terraform Enterprise see: `https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html`
-1. Save the token to a file or as the environment variable `TF_API_TOKEN`.
 
-#### Native
+1. Create a [Terraform Cloud API Token](https://app.terraform.io/app/settings/tokens)
+2. Export your token and the name of your TFC Org:
 
-        go get -u github.com/kaizendorks/terraform-cloud-exporter
+```
+export TF_API_TOKEN="TOKEN"
+export TF_ORGANIZATIONS="ORG_NAME"
+```
 
-        terraform-cloud-exporter \
-            --organizations=<YourOrg1>,<YourOrg2>,... \
-            --api-token-file=/path/to/file
+3. Spin up the application using Docker Compose
 
-#### Docker
+```
+docker compose up -d
+[+] Running 3/0
+ ✔ Container tfbi-exporter-1    Running                                                                                                                                                                                                                                       0.0s 
+ ✔ Container tfbi-prometheus-1  Running                                                                                                                                                                                                                                       0.0s 
+ ✔ Container tfbi-grafana-1     Running                  
+```
 
-        docker run -it --rm \
-            -p 9100:9100 \
-            -e TF_API_TOKEN=<YourToken> \
-        terraform-cloud-exporter
 
-### Full list of Flags
 
-        -h, --help                                     Show context-sensitive help.
-        -o, --organizations=ORG1,ORG2,...              List of the Organization names to scrape from (Omit to scrape all) ($TF_ORGANIZATIONS).
-        -t, --api-token=STRING                         User token for autheticating with the API ($TF_API_TOKEN).
-            --api-token-file=/path/to/file             File containing user token for autheticating with the API.
-            --api-address=https://app.terraform.io/    Terraform API address to scrape metrics from.
-            --api-insecure-skip-verify                 Accept any certificate presented by the API.
-            --listen-address="0.0.0.0:9100"            Address to listen on for web interface and telemetry.
-            --log-level="info"                         Only log messages with the given severity or above. One of: [debug,info,warn,error]
-            --log-format="logfmt"                      Output format of log messages. One of: [logfmt,json]
 
-## Contributing
-#### Dev environment
-1. Create a `.env` file with your token:
 
-        TF_API_TOKEN=<Your.atlasv1.Token>
-        TF_ORGANIZATIONS=<YourOrg1,...>
-        TF_API_ADDRESS=<YourApiAddress - Optional: Only required for Terraform enterprise.>
-1. Run the Exporter, in one of two modes:
-    1. Standalone exporter: `docker-compose run --rm --service-ports --entrypoint sh exporter`
-        * Run code: `go run main.go`
-        * View metricts: `curl localhost:9100/metrics`
-    1. Full Prometheus stack: `docker-compose up`
-        * Open Grafana: `http://localhost:3000/`
-        * Clean up: `docker-compode down`
 
-#### Go tests
-1. Apply style guides: `go fmt ./...`
-1. Static analysis: `go vet ./...`
-1. Run tests: `go test -v ./... -coverprofile cover.out`
-1. Examine code coverage: `go tool cover -func=cover.out`
 
-#### Prod Image tests
-1. Todo: Clean this up....
-1. Build prod image:
 
-        docker build --target prod \
-            --build-arg tag=localv \
-            --build-arg sha=locals \
-        -t terraform-cloud-exporter .
-1. Run prod image
-
-        docker run -it --rm \
-            --env-file .env \
-            -p 9100:9100 \
-        terraform-cloud-exporter \
-            --log-level debug
-1. Todo: Add dgoss tests
