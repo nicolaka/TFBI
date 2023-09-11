@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kaizendorks/terraform-cloud-exporter/internal/setup"
+	"github.com/nicolaka/tfbi/internal/setup"
 
 	tfe "github.com/hashicorp/go-tfe"
 

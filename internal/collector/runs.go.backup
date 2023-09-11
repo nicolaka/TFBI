@@ -7,7 +7,7 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
-	"github.com/kaizendorks/terraform-cloud-exporter/internal/setup"
+	"github.com/nicolaka/tfbi/internal/setup"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -54,33 +54,46 @@ func (ScrapeRuns) Scrape(ctx context.Context, config *setup.Config, ch chan<- pr
 	g, ctx := errgroup.WithContext(ctx)
 	for _, name := range config.Organizations {
 		g.Go(func() error {
-			runsList, err := config.Client.Runs.List(ctx, name, nil)
-			for _, r := range runsList.Items {
-					select {
-					case ch <- prometheus.MustNewConstMetric(
-						RunsInfo,
-						prometheus.GaugeValue,
-						1,
-						r.ID,
-						r.CreatedAt.String(),
-						strconv.FormatBool(r.HasChanges),
-						strconv.FormatBool(r.IsDestroy),
-						r.Message,
-						strconv.FormatBool(r.PlanOnly),
-						strconv.FormatBool(r.RefreshOnly),
-						string(r.Source),
-						string(r.Status),
-					):
-					case <-ctx.Done():
-						return ctx.Err()
-					}
-			}
-			if err != nil {
-				return fmt.Errorf("%v, organization=%s", err, name)
-			}
+			w, wctx := errgroup.WithContext(ctx)
+			workspacesList, err := config.Client.Workspaces.List(wctx, name, nil)
+				if err != nil {
+					return fmt.Errorf("%v, organization=%s", err, name)
+				}
+			    for _, ws := range workspacesList.Items {
+					w.Go(func() error {
+						runsList, err := config.Client.Runs.List(wctx,ws.ID,nil)
+						for _, r := range runsList.Items {
+									select {
+									case ch <- prometheus.MustNewConstMetric(
+										RunsInfo,
+										prometheus.GaugeValue,
+										1,
+										r.ID,
+										r.CreatedAt.String(),
+										strconv.FormatBool(r.HasChanges),
+										strconv.FormatBool(r.IsDestroy),
+										r.Message,
+										strconv.FormatBool(r.PlanOnly),
+										strconv.FormatBool(r.RefreshOnly),
+										string(r.Source),
+										string(r.Status),
+									):
+									case <-wctx.Done():
+										return wctx.Err()
+									}
+							}
+							if err != nil {
+								return fmt.Errorf("%v, organization=%s", err, name)
+							}
 
-			return nil
-		})
+						return nil
+					})
+				}
+
+				return w.Wait()
+
+			})
+		
 		
 	}
 	return g.Wait()	

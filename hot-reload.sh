@@ -5,7 +5,7 @@ RED='\033[0;31m'
 while true; do
     echo 'Building...'
     if go build ; then
-        ./terraform-cloud-exporter $@ &
+        ./tfbi $@ &
         PID=$!
         echo "Running app in the background: PID=$PID"
     else

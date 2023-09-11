@@ -1,4 +1,4 @@
-module github.com/kaizendorks/terraform-cloud-exporter
+module github.com/nicolaka/tfbi
 
 go 1.20
 

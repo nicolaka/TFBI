@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/kaizendorks/terraform-cloud-exporter/internal/collector"
-	"github.com/kaizendorks/terraform-cloud-exporter/internal/setup"
+	"github.com/nicolaka/tfbi/internal/collector"
+	"github.com/nicolaka/tfbi/internal/setup"
 
 	"github.com/go-kit/kit/log/level"
 
@@ -65,9 +65,9 @@ func main() {
 	http.Handle("/metrics", promhttp.InstrumentMetricHandler(prometheus.DefaultRegisterer, handlerFunc))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`<html>
-			<head><title>Terraform Cloud/Enterprise Exporter</title></head>
+			<head><title>Terraform Cloud Business Insights </title></head>
 			<body>
-			<h1>Terraform Cloud/Enterprise Exporter</h1>
+			<h1>Terraform Cloud Business Insights</h1>
 			<p><a href="/metrics">Metrics</a></p>
 			</body>
 			</html>`))

@@ -12,15 +12,17 @@ Terraform Cloud Business Insights (TFBI) is a tool that provides business, opera
 
 Summary of metrics collected:
 
-- Organization
-- Projects
-- Workspaces
-- Runs
-- Policies
+* Organization
+* Teams
+* Projects
+* Workspaces
+* Runs
+* PolicySets
 
 
 ## Usage
 
+0. Clone this repo. 
 1. Create a [Terraform Cloud API Token](https://app.terraform.io/app/settings/tokens)
 2. Export your token and the name of your TFC Org:
 

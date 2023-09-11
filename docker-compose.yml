@@ -23,7 +23,7 @@ services:
     ports:
       - 9100:9100
     volumes:
-      - ./:/go/src/github.com/kaizendorks/terraform-cloud-exporter
+      - ./:/go/src/github.com/nicolaka/tfbi
       - go-modules:/go/pkg/mod
 
   prometheus:

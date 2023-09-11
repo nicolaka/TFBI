@@ -4,13 +4,13 @@ RUN apk add --no-cache \
     g++ \
     inotify-tools
 
-WORKDIR /go/src/github.com/kaizendorks/terraform-cloud-exporter
+WORKDIR /go/src/github.com/nicolaka/tfbi
 
 ENTRYPOINT ["./hot-reload.sh"]
 
 FROM golang:1.20-alpine AS build
 
-WORKDIR /go/src/github.com/kaizendorks/terraform-cloud-exporter
+WORKDIR /go/src/github.com/nicolaka/tfbi
 
 ARG tag="v0.0.0"
 ARG sha="hash_commit"
@@ -21,7 +21,7 @@ RUN go build \
 
 FROM alpine:3.18 AS prod
 
-COPY --from=build /go/src/github.com/kaizendorks/terraform-cloud-exporter/terraform-cloud-exporter /bin/terraform-cloud-exporter
+COPY --from=build /go/src/github.com/nicolaka/tfbi/tfbi /bin/tfbi
 
 USER nobody
-ENTRYPOINT [ "/bin/terraform-cloud-exporter" ]
+ENTRYPOINT [ "/bin/tfbi" ]
