@@ -22,7 +22,7 @@ var (
 	OrganizationsInfo = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, organizationsSubsystem, "info"),
 		"Information about existing organizations",
-		[]string{"name", "created_at", "email", "external_id", "owners_team_saml_role_id", "saml_enabled", "two_factor_conformant"}, nil,
+		[]string{"name", "created_at", "email", "external_id", "owners_team_saml_role_id", "saml_enabled", "two_factor_conformant","assessment_enforced"}, nil,
 	)
 )
 
@@ -66,6 +66,7 @@ func getOrganization(ctx context.Context, name string, config *setup.Config, ch 
 		o.OwnersTeamSAMLRoleID,
 		strconv.FormatBool(o.SAMLEnabled),
 		strconv.FormatBool(o.TwoFactorConformant),
+		strconv.FormatBool(o.AssessmentsEnforced),
 	):
 	case <-ctx.Done():
 		return ctx.Err()

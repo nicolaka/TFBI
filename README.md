@@ -1,23 +1,46 @@
-# Terraform Business Insights (TFBI) 
+# 🔍 Terraform Business Insights (TFBI) 
 > Business, Operational, and Adoption Insights for Terraform Cloud & Enterprise 
 
-## Overview
+## Summary
 
 Terraform Cloud Business Insights (TFBI) is a tool that provides business, operational, and adoption insights for Terraform Cloud operators. It implements both custom Prometheus collectors and metrics to query the Terraform Cloud API using [go-tfe](https://pkg.go.dev/github.com/hashicorp/go-tfe) Go libary and a Grafana dashboard to easily explore common business, operational, and adoption metrics. 
+
+## Dashboard
 
 ![dashboard](img/dashboard_1.png)
 ![dashboard](img/dashboard_2.png)
 
 ## Metrics
 
-Summary of metrics collected:
+| API/Category | Metric Name | Type | Description | Implementation Status
+| - | - | - | - | -| 
+| Organization | Organization Summary | `Table` | Organization Details  |  ✅  | 
+| Teams | Total # of Teams | `Gauge` | Current number of active teams in the organization  |  ✅  | 
+| Teams | Teams Summary | `Table` | Team Summary Table  |  ✅  | 
+| Projects | Projects Count | `Gauge` | Current number of active projects in the organization  |  ✅  | 
+| Projects | Projects Summary | `Table` | Projects Summary  |  ✅  | 
+| Projects | Projects Count Over Time | `Time Series Graph` | Time series graph showing of # number of active projects over time |  ✅  | 
+| Users | Total # of Users | `Gauge` | Current number of active users in the organization  |  ✅  | 
+| Workspaces | Workspace Count | `Gauge` | Current number of active workspaces in the organization  |  ✅  | 
+| Workspaces | Workspaces Summary | `Table` | Workspaces Summary  |  ✅  | 
+| Workspaces | Workspaces Status Overview | `Chart` | Workspaces status distribution chart |  ✅  | 
+| Workspaces | Terraform Version Distribution | `Chart` | Terraform version distribution chart |  ✅  |
+| Workspaces | Drift Detection & Continious Validation Enabled | `Chart` | Chart showing details on number / % of workspaces that enabled drift detection/continious validation |  ✅  |
+| Workspaces | Workspaces Count Over Time | `Time Series Graph` | Time series graph showing of # number of active workspaces over time |  ✅  | 
+| Workspaces | Workspaces Status History | `Time Series Graph` | Time series graph showing workspace status over time |  ✅  | 
+| Runs | Total Runs | `Counter` | Total number of runs executed  |  ✅  | 
+| Runs | Total Run Failures | `Counter` | Total number of failed runs  |  ✅  | 
+| Resources  | Resources Under Management | `Gauge` | Number of Resources Under Management(RUM) |  ✅  |
+| Resources  | Resources Under Management Over Time | `Time Series Graph` | Number of Resources Under Management(RUM) over time |  ❌ |
+| Policy Sets | Policy Set Count | `Gauge` | Current number of active policy sets organization  |  ✅  | 
+| Policy Sets | Total Policy Check Failures | `Counter` | Total number of policy check failures  |  ✅  | 
+| Policy Sets | Policy Set Summary | `Table` | Policy Sets Summary  |  ✅  | 
+| Policy Sets  | Policy Type Distribution | `Chart` | Policy type distribution chart |  ✅  |
+| Modules  | Modules Count | `Gauge` | Number of Modules in the Private Module Registry |  ✅  |
+| Modules  | Modules Count Over Time | `Time Series Graph` | Number of Modules in the Private Module Registry over Time |  ❌  |
+| Modules  | No-Code Module Distribution | `Chart` | Percentage of modules that are no-code ready |  ✅  |
 
-* Organization
-* Teams
-* Projects
-* Workspaces
-* Runs
-* PolicySets
+
 
 
 ## Usage
