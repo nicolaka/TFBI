@@ -57,12 +57,26 @@ export TF_ORGANIZATIONS="ORG_NAME"
 3. Spin up the application using Docker Compose
 
 ```
-docker compose up -d
+$ docker compose up -d
 [+] Running 3/0
  ✔ Container tfbi-exporter-1    Running                                                                                                                                                                                                                                       0.0s 
  ✔ Container tfbi-prometheus-1  Running                                                                                                                                                                                                                                       0.0s 
  ✔ Container tfbi-grafana-1     Running                  
+
+
+$ docker compose ps   
+NAME                IMAGE             COMMAND                                                                                                                                                                                                                 SERVICE      CREATED         STATUS         PORTS
+tfbi-exporter-1     tfbi-exporter     "./hot-reload.sh '--log-level debug'"                                                                                                                                                                                   exporter     4 seconds ago   Up 3 seconds   0.0.0.0:9100->9100/tcp
+tfbi-grafana-1      grafana/grafana   "/run.sh"                                                                                                                                                                                                               grafana      4 seconds ago   Up 3 seconds   0.0.0.0:3000->3000/tcp
+tfbi-prometheus-1   prom/prometheus   "/bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus --web.console.libraries=/usr/share/prometheus/console_libraries --web.console.templates=/usr/share/prometheus/consoles"   prometheus   4 seconds ago   Up 3 seconds   0.0.0.0:9090->9090/tcp
+
 ```
+
+4. Now you can access the dashboard using http://localhost:3000
+
+
+
+
 
 
 
