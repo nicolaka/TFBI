@@ -1,0 +1,43 @@
+version: '3.7'
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
+services:
+  exporter:
+    image: nicolaka/tfbi-exporter:latest
+    tty: true
+    stdin_open: true
+    environment:
+      - TF_API_TOKEN
+      - TF_ORGANIZATIONS
+    ports:
+      - 9100:9100
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/:/etc/grafana/provisioning/
+    environment:
+      GF_INSTALL_PLUGINS: "grafana-piechart-panel"
+      GF_SERVER_ENABLE_GZIP: "true"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_USERS_ALLOW_SIGN_UP: "false"

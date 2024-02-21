@@ -1,0 +1,17 @@
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+
+scrape_configs:
+  - job_name: 'tf_exporter'
+    # Override the global default and scrape targets. For larger workspace sets, scraper needs time to go through all of them, hence the 3m/90s intervals
+    scrape_interval: 3m
+    scrape_timeout: 90s
+    static_configs:
+    - targets: ['exporter:9100']
