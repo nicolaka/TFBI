@@ -62,6 +62,8 @@ func getWorkspacesListPage(ctx context.Context, page int, organization string, c
 			// go-tfe bug 764 "project",
 			"current_run",
 			"organization",
+			"current_state_version",
+			/// "project",
 		},
 	})
 	if err != nil {
@@ -90,7 +92,7 @@ func getWorkspacesListPage(ctx context.Context, page int, organization string, c
 			strconv.Itoa(w.PolicyCheckFailures),
 			strconv.Itoa(w.RunFailures),
 			strconv.Itoa(w.RunsCount),
-			getCurrentRUM(w),
+			getCurrentRUM(w.CurrentStateVersion),
 		):
 		case <-ctx.Done():
 			return ctx.Err()
@@ -154,20 +156,15 @@ func getCurrentRunCreatedAt(r *tfe.Run) string {
 }
 
 // Getting current Billible Resources Under Management (RUM)
-func getCurrentRUM(w *tfe.Workspace) string {
+func getCurrentRUM(s *tfe.StateVersion) string {
 
-	if w.CurrentStateVersion == nil {
-		return "STNULL"
+	if s == nil {
+		return "0"
 	}
 
-	sv := *w.CurrentStateVersion
-	RUM := sv.BillableRUMCount
-
-	if RUM == nil {
-		return "RUMNIL"
+	if s.BillableRUMCount == nil {
+		return "0"
 	}
 
-	//strconv.Itoa(int(*w.CurrentStateVersion.BillableRUMCount))
-	///return strconv.Itoa(int(*sv.BillableRUMCount))
-	return strconv.Itoa(int(*RUM))
+	return strconv.Itoa(int(*s.BillableRUMCount))
 }

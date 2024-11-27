@@ -2,8 +2,8 @@ package collector
 
 import (
 	"context"
-	"strconv"
 	"fmt"
+	"strconv"
 
 	"golang.org/x/sync/errgroup"
 
@@ -11,7 +11,6 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 )
-// TESTTT
 
 const (
 	// teams is the Metric subsystem we use.
@@ -23,7 +22,7 @@ var (
 	TeamsInfo = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, teamsSubsystem, "info"),
 		"Information about existing teams",
-		[]string{"id", "name","sso_team_id","users_count"}, nil,
+		[]string{"id", "name", "sso_team_id", "users_count"}, nil,
 	)
 )
 
@@ -55,19 +54,24 @@ func (ScrapeTeams) Scrape(ctx context.Context, config *setup.Config, ch chan<- p
 		g.Go(func() error {
 			teamsList, err := config.Client.Teams.List(ctx, name, nil)
 			for _, t := range teamsList.Items {
-					select {
-					case ch <- prometheus.MustNewConstMetric(
-						TeamsInfo,
-						prometheus.GaugeValue,
-						1,
-						t.ID,
-						t.Name,
-						t.SSOTeamID,
-						strconv.Itoa(t.UserCount),
-					):
-					case <-ctx.Done():
-						return ctx.Err()
-					}
+
+				if t == nil {
+					return nil
+				}
+
+				select {
+				case ch <- prometheus.MustNewConstMetric(
+					TeamsInfo,
+					prometheus.GaugeValue,
+					1,
+					t.ID,
+					t.Name,
+					t.SSOTeamID,
+					strconv.Itoa(t.UserCount),
+				):
+				case <-ctx.Done():
+					return ctx.Err()
+				}
 			}
 			if err != nil {
 				return fmt.Errorf("%v, organization=%s", err, name)
@@ -75,7 +79,7 @@ func (ScrapeTeams) Scrape(ctx context.Context, config *setup.Config, ch chan<- p
 
 			return nil
 		})
-		
+
 	}
-	return g.Wait()	
+	return g.Wait()
 }
