@@ -1982,39 +1982,7 @@
           "fieldMinMax": false,
           "mappings": []
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Successful Runs"
-            },
-            "properties": []
-          },
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "rum_count"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 9,
@@ -2024,7 +1992,9 @@
       },
       "id": 49,
       "options": {
-        "displayLabels": [],
+        "displayLabels": [
+          "percent"
+        ],
         "legend": {
           "displayMode": "table",
           "placement": "right",
@@ -2039,7 +2009,8 @@
           "calcs": [
             "sum"
           ],
-          "fields": "",
+          "fields": "/^rum_count$/",
+          "limit": 25,
           "values": true
         },
         "tooltip": {
@@ -3834,8 +3805,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -4116,8 +4086,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4240,6 +4209,6 @@
   "timezone": "",
   "title": "Terraform Cloud Business Insights (TFBI)",
   "uid": "EB5gWkfGz",
-  "version": 15,
+  "version": 1,
   "weekStart": ""
 }
