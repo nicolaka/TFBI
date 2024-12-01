@@ -2,8 +2,8 @@ package collector
 
 import (
 	"context"
-	"strconv"
 	"fmt"
+	"strconv"
 
 	"golang.org/x/sync/errgroup"
 
@@ -22,7 +22,7 @@ var (
 	PolicySetsInfo = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, policysetsSubsystem, "info"),
 		"Information about existing policysets",
-		[]string{"id", "name","description","kind","global","policy_count","workspace_count","project_count","created_at","updated_at"}, nil,
+		[]string{"id", "name", "description", "kind", "global", "policy_count", "workspace_count", "project_count", "created_at", "updated_at"}, nil,
 	)
 )
 
@@ -56,25 +56,30 @@ func (ScrapePolicySets) Scrape(ctx context.Context, config *setup.Config, ch cha
 		g.Go(func() error {
 			policysetList, err := config.Client.PolicySets.List(ctx, name, nil)
 			for _, p := range policysetList.Items {
-					select {
-					case ch <- prometheus.MustNewConstMetric(
-						PolicySetsInfo,
-						prometheus.GaugeValue,
-						1,
-						p.ID,
-						p.Name,
-						p.Description,
-						string(p.Kind),
-						strconv.FormatBool(p.Global),
-						strconv.Itoa(p.PolicyCount),
-						strconv.Itoa(p.WorkspaceCount),
-						strconv.Itoa(p.ProjectCount),
-						p.CreatedAt.String(),
-						p.UpdatedAt.String(),
-					):
-					case <-ctx.Done():
-						return ctx.Err()
-					}
+
+				if p == nil {
+					return nil
+				}
+
+				select {
+				case ch <- prometheus.MustNewConstMetric(
+					PolicySetsInfo,
+					prometheus.GaugeValue,
+					1,
+					p.ID,
+					p.Name,
+					p.Description,
+					string(p.Kind),
+					strconv.FormatBool(p.Global),
+					strconv.Itoa(p.PolicyCount),
+					strconv.Itoa(p.WorkspaceCount),
+					strconv.Itoa(p.ProjectCount),
+					p.CreatedAt.String(),
+					p.UpdatedAt.String(),
+				):
+				case <-ctx.Done():
+					return ctx.Err()
+				}
 			}
 			if err != nil {
 				return fmt.Errorf("%v, organization=%s", err, name)
@@ -82,7 +87,7 @@ func (ScrapePolicySets) Scrape(ctx context.Context, config *setup.Config, ch cha
 
 			return nil
 		})
-		
+
 	}
-	return g.Wait()	
+	return g.Wait()
 }
