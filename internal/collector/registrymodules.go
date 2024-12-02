@@ -55,6 +55,11 @@ func (ScrapeRegistryModules) Scrape(ctx context.Context, config *setup.Config, c
 	for _, name := range config.Organizations {
 		g.Go(func() error {
 			registrymodulesList, err := config.Client.RegistryModules.List(ctx, name, nil)
+
+			if err != nil {
+				return fmt.Errorf("%v, organization=%s", err, name)
+			}
+
 			for _, m := range registrymodulesList.Items {
 				select {
 				case ch <- prometheus.MustNewConstMetric(
@@ -74,9 +79,6 @@ func (ScrapeRegistryModules) Scrape(ctx context.Context, config *setup.Config, c
 				case <-ctx.Done():
 					return ctx.Err()
 				}
-			}
-			if err != nil {
-				return fmt.Errorf("%v, organization=%s", err, name)
 			}
 
 			return nil

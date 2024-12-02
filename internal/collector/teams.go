@@ -58,6 +58,11 @@ func (ScrapeTeams) Scrape(ctx context.Context, config *setup.Config, ch chan<- p
 					"organization-memberships",
 				},
 			})
+
+			if err != nil {
+				return fmt.Errorf("%v, organization=%s", err, name)
+			}
+
 			for _, t := range teamsList.Items {
 
 				if t == nil {
@@ -77,9 +82,6 @@ func (ScrapeTeams) Scrape(ctx context.Context, config *setup.Config, ch chan<- p
 				case <-ctx.Done():
 					return ctx.Err()
 				}
-			}
-			if err != nil {
-				return fmt.Errorf("%v, organization=%s", err, name)
 			}
 
 			return nil

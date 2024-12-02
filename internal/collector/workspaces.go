@@ -60,10 +60,10 @@ func getWorkspacesListPage(ctx context.Context, page int, organization string, c
 		},
 		Include: []tfe.WSIncludeOpt{
 			// go-tfe bug 764 "project",
+			//"project",
 			"current_run",
 			"organization",
 			"current_state_version",
-			//"project",
 		},
 	})
 	if err != nil {

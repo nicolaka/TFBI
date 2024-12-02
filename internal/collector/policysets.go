@@ -55,12 +55,12 @@ func (ScrapePolicySets) Scrape(ctx context.Context, config *setup.Config, ch cha
 	for _, name := range config.Organizations {
 		g.Go(func() error {
 			policysetList, err := config.Client.PolicySets.List(ctx, name, nil)
+
+			if err != nil {
+				return fmt.Errorf("%v, organization=%s", err, name)
+			}
+
 			for _, p := range policysetList.Items {
-
-				if err != nil {
-					return fmt.Errorf("%v, organization=%s", err, name)
-				}
-
 				select {
 				case ch <- prometheus.MustNewConstMetric(
 					PolicySetsInfo,
