@@ -2,8 +2,8 @@ package collector
 
 import (
 	"context"
-	"strconv"
 	"fmt"
+	"strconv"
 
 	"golang.org/x/sync/errgroup"
 
@@ -22,7 +22,7 @@ var (
 	RegistryModulesInfo = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, registrymodulesSubsystem, "info"),
 		"Information about existing registrymodules",
-		[]string{"id", "name", "provider", "registry_name","no_code", "status", "created_at","updated_at"}, nil,
+		[]string{"id", "name", "provider", "registry_name", "no_code", "status", "created_at", "updated_at", "organization"}, nil,
 	)
 )
 
@@ -56,23 +56,24 @@ func (ScrapeRegistryModules) Scrape(ctx context.Context, config *setup.Config, c
 		g.Go(func() error {
 			registrymodulesList, err := config.Client.RegistryModules.List(ctx, name, nil)
 			for _, m := range registrymodulesList.Items {
-					select {
-					case ch <- prometheus.MustNewConstMetric(
-						RegistryModulesInfo,
-						prometheus.GaugeValue,
-						1,
-						m.ID,
-						m.Name,
-						m.Provider,
-						string(m.RegistryName),
-						strconv.FormatBool(m.NoCode),
-						string(m.Status),
-						m.CreatedAt,
-						m.UpdatedAt,
-					):
-					case <-ctx.Done():
-						return ctx.Err()
-					}
+				select {
+				case ch <- prometheus.MustNewConstMetric(
+					RegistryModulesInfo,
+					prometheus.GaugeValue,
+					1,
+					m.ID,
+					m.Name,
+					m.Provider,
+					string(m.RegistryName),
+					strconv.FormatBool(m.NoCode),
+					string(m.Status),
+					m.CreatedAt,
+					m.UpdatedAt,
+					m.Organization.Name,
+				):
+				case <-ctx.Done():
+					return ctx.Err()
+				}
 			}
 			if err != nil {
 				return fmt.Errorf("%v, organization=%s", err, name)
@@ -80,7 +81,7 @@ func (ScrapeRegistryModules) Scrape(ctx context.Context, config *setup.Config, c
 
 			return nil
 		})
-		
+
 	}
-	return g.Wait()	
+	return g.Wait()
 }

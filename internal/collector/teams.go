@@ -7,6 +7,7 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
+	"github.com/hashicorp/go-tfe"
 	"github.com/nicolaka/tfbi/internal/setup"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -52,7 +53,11 @@ func (ScrapeTeams) Scrape(ctx context.Context, config *setup.Config, ch chan<- p
 	g, ctx := errgroup.WithContext(ctx)
 	for _, name := range config.Organizations {
 		g.Go(func() error {
-			teamsList, err := config.Client.Teams.List(ctx, name, nil)
+			teamsList, err := config.Client.Teams.List(ctx, name, &tfe.TeamListOptions{
+				Include: []tfe.TeamIncludeOpt{
+					"organization-memberships",
+				},
+			})
 			for _, t := range teamsList.Items {
 
 				if t == nil {

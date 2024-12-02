@@ -22,7 +22,7 @@ var (
 	PolicySetsInfo = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, policysetsSubsystem, "info"),
 		"Information about existing policysets",
-		[]string{"id", "name", "description", "kind", "global", "policy_count", "workspace_count", "project_count", "created_at", "updated_at"}, nil,
+		[]string{"id", "name", "description", "kind", "global", "policy_count", "workspace_count", "project_count", "created_at", "updated_at", "organization"}, nil,
 	)
 )
 
@@ -57,8 +57,8 @@ func (ScrapePolicySets) Scrape(ctx context.Context, config *setup.Config, ch cha
 			policysetList, err := config.Client.PolicySets.List(ctx, name, nil)
 			for _, p := range policysetList.Items {
 
-				if p == nil {
-					return nil
+				if err != nil {
+					return fmt.Errorf("%v, organization=%s", err, name)
 				}
 
 				select {
@@ -76,13 +76,11 @@ func (ScrapePolicySets) Scrape(ctx context.Context, config *setup.Config, ch cha
 					strconv.Itoa(p.ProjectCount),
 					p.CreatedAt.String(),
 					p.UpdatedAt.String(),
+					p.Organization.Name,
 				):
 				case <-ctx.Done():
 					return ctx.Err()
 				}
-			}
-			if err != nil {
-				return fmt.Errorf("%v, organization=%s", err, name)
 			}
 
 			return nil

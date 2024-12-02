@@ -21,7 +21,7 @@ var (
 	ProjectsInfo = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, projectsSubsystem, "info"),
 		"Information about existing projects",
-		[]string{"id", "name"}, nil,
+		[]string{"id", "name", "organization"}, nil,
 	)
 )
 
@@ -52,28 +52,29 @@ func (ScrapeProjects) Scrape(ctx context.Context, config *setup.Config, ch chan<
 	for _, name := range config.Organizations {
 		g.Go(func() error {
 			projectList, err := config.Client.Projects.List(ctx, name, nil)
-			
+
 			if err != nil {
 				return fmt.Errorf("%v, organization=%s", err, name)
 			}
 
 			for _, p := range projectList.Items {
-					select {
-					case ch <- prometheus.MustNewConstMetric(
-						ProjectsInfo,
-						prometheus.GaugeValue,
-						1,
-						p.ID,
-						p.Name,
-					):
-					case <-ctx.Done():
-						return ctx.Err()
-					}
+				select {
+				case ch <- prometheus.MustNewConstMetric(
+					ProjectsInfo,
+					prometheus.GaugeValue,
+					1,
+					p.ID,
+					p.Name,
+					p.Organization.Name,
+				):
+				case <-ctx.Done():
+					return ctx.Err()
+				}
 			}
 
 			return nil
 		})
-		
+
 	}
-	return g.Wait()	
+	return g.Wait()
 }
