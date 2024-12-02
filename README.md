@@ -6,9 +6,10 @@
 
 **Summary:** Terraform Cloud Business Insights (TFBI) is a tool that provides business, operational, and adoption insights for Terraform Cloud/Enterprise operators. It implements both custom Prometheus collectors and metrics to query the Terraform Cloud/Enterprise API using [go-tfe](https://pkg.go.dev/github.com/hashicorp/go-tfe) Go libary and a Grafana dashboard to easily explore common business, operational, and adoption metrics. 
 
-![dashboard](img/tfbi_dashboard_1.png)
-![dashboard](img/tfbi_dashboard_2.png)
-
+![dashboard](img/tfbi_1.png)
+![dashboard](img/tfbi_2.png)
+![dashboard](img/tfbi_3.png)
+![dashboard](img/tfbi_4.png)
 ## Metrics
 
 | API/Category | Metric Name | Type | Description | Implementation Status
@@ -29,7 +30,9 @@
 | Workspaces | Workspaces Status History | `Time Series Graph` | Time series graph showing workspace status over time |  ✅  | 
 | Runs | Total Runs | `Counter` | Total number of runs executed  |  ✅  | 
 | Runs | Total Run Failures | `Counter` | Total number of failed runs  |  ✅  | 
-| Resources  | Resources Under Management | `Gauge` | Number of Resources Under Management(RUM) |  ✅  |
+| Resources  | Current Total Resources | `Gauge` | Number of Total Resources  |  ✅  |
+| Resources  | Current Total Resources Under Management(RUM) | `Gauge` | Number of Total Resources  |  ✅  |
+| Resources  | Workspace RUM Breakdown | `Chart` | Breadkdown of RUM usage by Workspace |  ✅  |
 | Policy Sets | Policy Set Count | `Gauge` | Current number of active policy sets organization  |  ✅  | 
 | Policy Sets | Total Policy Check Failures | `Counter` | Total number of policy check failures  |  ✅  | 
 | Policy Sets | Policy Set Summary | `Table` | Policy Sets Summary  |  ✅  | 
@@ -50,6 +53,8 @@
 export TF_API_TOKEN="TOKEN"
 export TF_ORGANIZATIONS="ORG_NAME"
 ```
+
+> NOTE: TFBI supports scraping multiple orgs, if you are usig TFBI with TFE you can simply add the organization names as a list (e.g `TF_ORGANIZATIONS="ORG_1,ORG_2,ORG_3"` ) 
 
 3. Spin up the application using Docker Compose
 
