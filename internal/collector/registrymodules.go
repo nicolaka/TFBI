@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"golang.org/x/sync/errgroup"
-
+	"github.com/hashicorp/go-tfe"
 	"github.com/nicolaka/tfbi/internal/setup"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -50,40 +50,65 @@ func (ScrapeRegistryModules) Version() string {
 
 // []string{"id", "name", "provider", "registry-name","no-code", "status", "created-at","updated-at"}, nil,
 
+func getModulesListPage(ctx context.Context, page int, organization string, config *setup.Config, ch chan<- prometheus.Metric) error {
+	registrymodulesList, err := config.Client.RegistryModules.List(ctx, organization, &tfe.RegistryModuleListOptions{
+		ListOptions: tfe.ListOptions{
+			PageSize:   pageSize,
+			PageNumber: page,
+		},
+	})
+
+	if err != nil {
+		return fmt.Errorf("%v, (organization=%s, page=%d)", err, organization, page)
+	}
+
+	for _, m := range registrymodulesList.Items {
+		select {
+		case ch <- prometheus.MustNewConstMetric(
+			RegistryModulesInfo,
+			prometheus.GaugeValue,
+			1,
+			m.ID,
+			m.Name,
+			m.Provider,
+			string(m.RegistryName),
+			strconv.FormatBool(m.NoCode),
+			string(m.Status),
+			m.CreatedAt,
+			m.UpdatedAt,
+			m.Organization.Name,
+		):
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+	}
+
+	return nil
+}
+
 func (ScrapeRegistryModules) Scrape(ctx context.Context, config *setup.Config, ch chan<- prometheus.Metric) error {
 	g, ctx := errgroup.WithContext(ctx)
 	for _, name := range config.Organizations {
+		name := name
 		g.Go(func() error {
-			registrymodulesList, err := config.Client.RegistryModules.List(ctx, name, nil)
+			registrymodulesList, err := config.Client.RegistryModules.List(ctx, name, &tfe.RegistryModuleListOptions{
+				ListOptions: tfe.ListOptions{
+					PageSize: pageSize,
+				}})
 
 			if err != nil {
 				return fmt.Errorf("%v, organization=%s", err, name)
 			}
 
-			for _, m := range registrymodulesList.Items {
-				select {
-				case ch <- prometheus.MustNewConstMetric(
-					RegistryModulesInfo,
-					prometheus.GaugeValue,
-					1,
-					m.ID,
-					m.Name,
-					m.Provider,
-					string(m.RegistryName),
-					strconv.FormatBool(m.NoCode),
-					string(m.Status),
-					m.CreatedAt,
-					m.UpdatedAt,
-					m.Organization.Name,
-				):
-				case <-ctx.Done():
-					return ctx.Err()
+			for i := 1; i <= registrymodulesList.Pagination.TotalPages; i++ {
+				if err := getModulesListPage(ctx, i, name, config, ch); err != nil {
+					return err
 				}
 			}
 
 			return nil
 		})
-
 	}
+
 	return g.Wait()
 }

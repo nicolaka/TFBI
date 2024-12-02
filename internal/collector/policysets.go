@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"golang.org/x/sync/errgroup"
-
+	"github.com/hashicorp/go-tfe"
 	"github.com/nicolaka/tfbi/internal/setup"
+	"golang.org/x/sync/errgroup"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -48,44 +48,67 @@ func (ScrapePolicySets) Version() string {
 	return "v2"
 }
 
-// []string{"id", "name","description","kind","global","policy_count","workspace_count","project_count","created_at","updated_at"}, nil,
+func getPolicySetsListPage(ctx context.Context, page int, organization string, config *setup.Config, ch chan<- prometheus.Metric) error {
+	policysetsList, err := config.Client.PolicySets.List(ctx, organization, &tfe.PolicySetListOptions{
+		ListOptions: tfe.ListOptions{
+			PageSize:   pageSize,
+			PageNumber: page,
+		},
+	})
+
+	if err != nil {
+		return fmt.Errorf("%v, (organization=%s, page=%d)", err, organization, page)
+	}
+
+	for _, p := range policysetsList.Items {
+		select {
+		case ch <- prometheus.MustNewConstMetric(
+			PolicySetsInfo,
+			prometheus.GaugeValue,
+			1,
+			p.ID,
+			p.Name,
+			p.Description,
+			string(p.Kind),
+			strconv.FormatBool(p.Global),
+			strconv.Itoa(p.PolicyCount),
+			strconv.Itoa(p.WorkspaceCount),
+			strconv.Itoa(p.ProjectCount),
+			p.CreatedAt.String(),
+			p.UpdatedAt.String(),
+			p.Organization.Name,
+		):
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+	}
+
+	return nil
+}
 
 func (ScrapePolicySets) Scrape(ctx context.Context, config *setup.Config, ch chan<- prometheus.Metric) error {
 	g, ctx := errgroup.WithContext(ctx)
 	for _, name := range config.Organizations {
+		name := name
 		g.Go(func() error {
-			policysetList, err := config.Client.PolicySets.List(ctx, name, nil)
+			policysetsList, err := config.Client.PolicySets.List(ctx, name, &tfe.PolicySetListOptions{
+				ListOptions: tfe.ListOptions{
+					PageSize: pageSize,
+				}})
 
 			if err != nil {
 				return fmt.Errorf("%v, organization=%s", err, name)
 			}
 
-			for _, p := range policysetList.Items {
-				select {
-				case ch <- prometheus.MustNewConstMetric(
-					PolicySetsInfo,
-					prometheus.GaugeValue,
-					1,
-					p.ID,
-					p.Name,
-					p.Description,
-					string(p.Kind),
-					strconv.FormatBool(p.Global),
-					strconv.Itoa(p.PolicyCount),
-					strconv.Itoa(p.WorkspaceCount),
-					strconv.Itoa(p.ProjectCount),
-					p.CreatedAt.String(),
-					p.UpdatedAt.String(),
-					p.Organization.Name,
-				):
-				case <-ctx.Done():
-					return ctx.Err()
+			for i := 1; i <= policysetsList.Pagination.TotalPages; i++ {
+				if err := getPolicySetsListPage(ctx, i, name, config, ch); err != nil {
+					return err
 				}
 			}
 
 			return nil
 		})
-
 	}
+
 	return g.Wait()
 }
