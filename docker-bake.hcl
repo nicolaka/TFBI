@@ -1,11 +1,16 @@
 group "default" {
-  targets = ["exporter"]
+  targets = ["tfbi-exporter"]
 }
 
-target "exporter" {
-  context = "."
-  dockerfile = "Dockerfile.dev"
+variable "TAG" {
+  default = "latest"
+}
 
-  tags = ["dev"]
+target "tfbi-exporter" {
+  context = "."
+  dockerfile = "Dockerfile"
+  platforms = ["linux/amd64", "linux/arm64"]
+  tags = ["nicolaka/tfbi-exporter:${TAG}"]
+  output = ["type=image","type=docker"]
 }
 
