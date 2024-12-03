@@ -11,6 +11,6 @@ target "tfbi-exporter" {
   dockerfile = "Dockerfile"
   platforms = ["linux/amd64", "linux/arm64"]
   tags = ["nicolaka/tfbi-exporter:${TAG}"]
-  output = ["type=image","type=docker"]
+  output = ["type=image"]
 }
 

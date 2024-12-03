@@ -17,10 +17,12 @@ services:
       # - --api-insecure-skip-verify
       # - --api-address ${TF_API_ADDRESS}
       # - -o ${TF_ORGANIZATIONS}
-      - --log-level debug
+       - --log-level debug
     environment:
       - TF_API_TOKEN
       - TF_ORGANIZATIONS
+     #- TFE_ADDRESS="https://TFE_ADDR"  
+      
     ports:
       - 9100:9100
     volumes:
