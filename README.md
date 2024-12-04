@@ -55,7 +55,12 @@ export TF_ORGANIZATIONS="ORG_NAME"
 ```
 
 > NOTE: TFBI supports scraping multiple orgs, you can simply add the organization names as a list (e.g `TF_ORGANIZATIONS="ORG_1,ORG_2,ORG_3"` ) 
-3. If you're using TFBI with Terraform Enterprise (TFE), edit `docker-compose.yml` file and uncomment and `TFE_ADDRESS` and add the TFE address there.
+
+3. If you're using TFBI with Terraform Enterprise (TFE), edit `docker-compose.yml` file and uncomment `TFE_ADDRESS` and add the TFE address there as an environment variable 
+
+```
+export TFE_ADDRESS="https://TFE_ADDRESS"
+```
 
 4. Spin up the application using Docker Compose
 
