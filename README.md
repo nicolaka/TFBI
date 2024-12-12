@@ -33,6 +33,8 @@
 | Resources  | Current Total Resources | `Gauge` | Number of Total Resources  |  ✅  |
 | Resources  | Current Total Resources Under Management(RUM) | `Gauge` | Number of Total Resources  |  ✅  |
 | Resources  | Workspace RUM Breakdown | `Chart` | Breadkdown of RUM usage by Workspace |  ✅  |
+| Resources  | Workspace RUM Breakdown | `Table` | Breadkdown of RUM usage by Workspace |  ✅  |
+| Resources  | Project RUM Breakdown | `Chart` | Breadkdown of RUM usage by Project |  ✅  |
 | Policy Sets | Policy Set Count | `Gauge` | Current number of active policy sets organization  |  ✅  | 
 | Policy Sets | Total Policy Check Failures | `Counter` | Total number of policy check failures  |  ✅  | 
 | Policy Sets | Policy Set Summary | `Table` | Policy Sets Summary  |  ✅  | 
