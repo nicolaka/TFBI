@@ -1495,6 +1495,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "green",
             "mode": "palette-classic"
           },
           "custom": {
@@ -1515,6 +1516,92 @@
         "w": 11,
         "x": 13,
         "y": 18
+      },
+      "id": 29,
+      "options": {
+        "displayLabels": [
+          "name"
+        ],
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum by(assessments_enabled) (tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
+          "format": "time_series",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{current_run_status}}",
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Drift Detection & Continuous Validation Enabled",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {}
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 13,
+        "x": 0,
+        "y": 27
       },
       "id": 48,
       "options": {
@@ -1592,8 +1679,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 13,
-        "x": 0,
+        "w": 11,
+        "x": 13,
         "y": 27
       },
       "id": 18,
@@ -1641,93 +1728,6 @@
         }
       ],
       "title": "Workspace Status Overview",
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "green",
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 11,
-        "x": 13,
-        "y": 27
-      },
-      "id": 29,
-      "options": {
-        "displayLabels": [
-          "name"
-        ],
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": [
-            "value",
-            "percent"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "sum by(assessments_enabled) (tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
-          "format": "time_series",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "{{current_run_status}}",
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Drift Detection & Continuous Validation Enabled",
-      "transformations": [
-        {
-          "id": "convertFieldType",
-          "options": {}
-        }
-      ],
       "type": "piechart"
     },
     {
@@ -3572,14 +3572,15 @@
             },
             "includeByName": {},
             "indexByName": {
-              "Time": 3,
-              "Value": 4,
-              "__name__": 5,
+              "Time": 4,
+              "Value": 5,
+              "__name__": 6,
+              "description": 2,
               "id": 1,
-              "instance": 6,
-              "job": 7,
+              "instance": 7,
+              "job": 8,
               "name": 0,
-              "organization": 2
+              "organization": 3
             },
             "renameByName": {}
           }
@@ -4302,6 +4303,6 @@
   "timezone": "",
   "title": "Terraform Cloud Business Insights (TFBI)",
   "uid": "EB5gWkfGz",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
