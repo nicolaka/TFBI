@@ -10,6 +10,8 @@
 ![dashboard](img/tfbi_2.png)
 ![dashboard](img/tfbi_3.png)
 ![dashboard](img/tfbi_4.png)
+![dashboard](img/tfbi_5.png)
+
 ## Metrics
 
 | API/Category | Metric Name | Type | Description | Implementation Status
@@ -105,71 +107,7 @@ exporter-1  | Building...
 exporter-1  | go: downloading github.com/prometheus/client_golang v1.20.5
 exporter-1  | go: downloading github.com/go-kit/kit v0.13.0
 exporter-1  | go: downloading github.com/hashicorp/go-tfe v1.70.0
-exporter-1  | go: downloading golang.org/x/sync v0.8.0
-exporter-1  | go: downloading github.com/alecthomas/kong v1.4.0
-exporter-1  | go: downloading github.com/go-kit/log v0.2.1
-exporter-1  | go: downloading github.com/klauspost/compress v1.17.11
-exporter-1  | go: downloading github.com/prometheus/client_model v0.6.1
-exporter-1  | go: downloading github.com/prometheus/common v0.60.1
-exporter-1  | go: downloading github.com/beorn7/perks v1.0.1
-exporter-1  | go: downloading github.com/cespare/xxhash/v2 v2.3.0
-exporter-1  | go: downloading github.com/prometheus/procfs v0.15.1
-exporter-1  | go: downloading google.golang.org/protobuf v1.35.1
-exporter-1  | go: downloading github.com/go-logfmt/logfmt v0.6.0
-exporter-1  | go: downloading github.com/google/go-querystring v1.1.0
-exporter-1  | go: downloading github.com/hashicorp/go-cleanhttp v0.5.2
-exporter-1  | go: downloading github.com/hashicorp/go-retryablehttp v0.7.7
-exporter-1  | go: downloading github.com/hashicorp/go-slug v0.16.1
-exporter-1  | go: downloading github.com/hashicorp/go-version v1.7.0
-exporter-1  | go: downloading golang.org/x/time v0.7.0
-exporter-1  | go: downloading github.com/hashicorp/jsonapi v1.3.1
-exporter-1  | go: downloading github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822
-exporter-1  | go: downloading golang.org/x/sys v0.26.0
-exporter-1  | Running app in the background: PID=2133
-exporter-1  | Setting up watches.
-exporter-1  | Watches established.
-exporter-1  | level=info TFBI=2024-12-12T16:59:36.190Z caller=main.go:61 msg="Starting tf_exporter" version=
-exporter-1  | level=debug TFBI=2024-12-12T16:59:36.190Z caller=main.go:62 msg="Build Context" go=go1.23.3 date=
-exporter-1  | level=info TFBI=2024-12-12T16:59:36.190Z caller=main.go:76 msg="Listening on address" address=0.0.0.0:9100
-exporter-1  | ./internal/collector/ MODIFY workspaces.go
-exporter-1  | Kill background service: PID=2133
-exporter-1  | Building...
-exporter-1  | Running app in the background: PID=2214
-exporter-1  | Setting up watches.
-exporter-1  | Watches established.
-exporter-1  | level=info TFBI=2024-12-12T17:01:34.683Z caller=main.go:61 msg="Starting tf_exporter" version=
-exporter-1  | level=debug TFBI=2024-12-12T17:01:34.683Z caller=main.go:62 msg="Build Context" go=go1.23.3 date=
-exporter-1  | level=info TFBI=2024-12-12T17:01:34.683Z caller=main.go:76 msg="Listening on address" address=0.0.0.0:9100
-exporter-1  | ./internal/collector/ MODIFY workspaces.go
-exporter-1  | Kill background service: PID=2214
-exporter-1  | Building...
-exporter-1  | Running app in the background: PID=2290
-exporter-1  | Setting up watches.
-exporter-1  | Watches established.
-exporter-1  | level=info TFBI=2024-12-12T17:01:36.169Z caller=main.go:61 msg="Starting tf_exporter" version=
-exporter-1  | level=debug TFBI=2024-12-12T17:01:36.169Z caller=main.go:62 msg="Build Context" go=go1.23.3 date=
-exporter-1  | level=info TFBI=2024-12-12T17:01:36.169Z caller=main.go:76 msg="Listening on address" address=0.0.0.0:9100
-exporter-1  | ./internal/collector/ MODIFY workspaces.go
-exporter-1  | Kill background service: PID=2290
-exporter-1  | Building...
-exporter-1  | Running app in the background: PID=2392
-exporter-1  | Setting up watches.
-exporter-1  | Watches established.
-exporter-1  | level=info TFBI=2024-12-12T17:02:23.555Z caller=main.go:61 msg="Starting tf_exporter" version=
-exporter-1  | level=debug TFBI=2024-12-12T17:02:23.555Z caller=main.go:62 msg="Build Context" go=go1.23.3 date=
-exporter-1  | level=info TFBI=2024-12-12T17:02:23.556Z caller=main.go:76 msg="Listening on address" address=0.0.0.0:9100
-exporter-1  | ./internal/collector/ MODIFY workspaces.go
-exporter-1  | Kill background service: PID=2392
-exporter-1  | Building...
-exporter-1  | Running app in the background: PID=2479
-exporter-1  | Setting up watches.
-exporter-1  | Watches established.
-exporter-1  | ./internal/collector/ MODIFY workspaces.go
-exporter-1  | Kill background service: PID=2479
-exporter-1  | Building...
-exporter-1  | Running app in the background: PID=2554
-exporter-1  | Setting up watches.
-exporter-1  | Watches established.
+....
 exporter-1  | level=info TFBI=2024-12-12T17:04:09.944Z caller=main.go:61 msg="Starting tf_exporter" version=
 exporter-1  | level=debug TFBI=2024-12-12T17:04:09.944Z caller=main.go:62 msg="Build Context" go=go1.23.3 date=
 exporter-1  | level=info TFBI=2024-12-12T17:04:09.944Z caller=main.go:76 msg="Listening on address" address=0.0.0.0:9100
