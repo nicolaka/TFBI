@@ -21,7 +21,7 @@ var (
 	ProjectsInfo = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, projectsSubsystem, "info"),
 		"Information about existing projects",
-		[]string{"id", "name", "organization"}, nil,
+		[]string{"id", "name", "organization", "description"}, nil,
 	)
 )
 
@@ -68,6 +68,7 @@ func getProjectsListPage(ctx context.Context, page int, organization string, con
 			p.ID,
 			p.Name,
 			p.Organization.Name,
+			p.Description,
 		):
 		case <-ctx.Done():
 			return ctx.Err()

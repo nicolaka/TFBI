@@ -43,7 +43,7 @@
         "content": "# Terraform Cloud Business Insights\n\n![img](https://www.datocms-assets.com/2885/1620073844-blog-library-product-terraform-cloud-tfc-black-gradient.jpg)",
         "mode": "markdown"
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "title": "Terraform Cloud Business Insights",
       "type": "text"
     },
@@ -95,7 +95,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -201,7 +201,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -307,7 +307,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -413,7 +413,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -476,7 +476,302 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "",
+      "description": "Total number of organizations.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 9,
+        "y": 5
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "expr": "sum(tf_organizations_info{name=~\"$organizations\"})",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Organization Count",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Total number of Teams",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 13,
+        "y": 5
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "builder",
+          "expr": "sum(tf_teams_info{})",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Teams Count",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Total number of Users",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 19,
+        "y": 5
+      },
+      "id": 28,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^users_count$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "count by(users_count) (tf_teams_info)",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Users count",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "users_count"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Total number of workspaces.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 0,
+        "y": 10
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum(tf_workspaces_info{organization=~\"$organizations\"})",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": " Workspace Count",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Number of Runs",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -496,10 +791,279 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 8,
         "w": 4,
+        "x": 5,
+        "y": 10
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^runs_count$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\"}",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "queryType": "randomWalk",
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Number of Runs",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "environment": true,
+              "instance": true,
+              "job": true,
+              "organization": true,
+              "project": true
+            },
+            "indexByName": {
+              "Time": 3,
+              "Value": 17,
+              "__name__": 4,
+              "assessments_enabled": 12,
+              "created_at": 8,
+              "current_run": 18,
+              "current_run_created_at": 14,
+              "current_run_status": 13,
+              "description": 2,
+              "environment": 19,
+              "id": 1,
+              "instance": 15,
+              "job": 16,
+              "name": 0,
+              "organization": 20,
+              "policy_check_failures": 11,
+              "project": 5,
+              "resource_count": 6,
+              "run_failures": 9,
+              "runs_count": 7,
+              "terraform_version": 10
+            },
+            "renameByName": {
+              "resource_count": ""
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "resource_count"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "runs_count"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "policy_check_failures"
+              },
+              {
+                "destinationType": "boolean",
+                "targetField": "assessments_enabled"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "run_failures"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Team Summary",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 301
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 492
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 15,
         "x": 9,
-        "y": 5
+        "y": 10
+      },
+      "id": 20,
+      "options": {
+        "cellHeight": "md",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "builder",
+          "expr": "tf_teams_info{}",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Teams Summary",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "instance": true,
+              "job": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 7,
+              "__name__": 1,
+              "id": 3,
+              "instance": 5,
+              "job": 6,
+              "name": 2,
+              "users_count": 4
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "All Resources Created by Terraform ( not just RUM)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 5,
+        "x": 0,
+        "y": 18
       },
       "id": 23,
       "options": {
@@ -519,7 +1083,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -527,8 +1091,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_workspaces_info{organization=\"$organizations\"}",
+          "editorMode": "code",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -540,7 +1104,7 @@
           "useBackend": false
         }
       ],
-      "title": "Current Total Resources ",
+      "title": "Total Organization Resources ",
       "transformations": [
         {
           "id": "organize",
@@ -636,153 +1200,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 9,
         "w": 4,
-        "x": 13,
-        "y": 5
-      },
-      "id": 33,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "/^runs_count$/",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_workspaces_info{organization=\"$organizations\"}",
-          "format": "table",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "queryType": "randomWalk",
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Total Runs",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Value": true,
-              "__name__": true,
-              "environment": true,
-              "instance": true,
-              "job": true,
-              "organization": true,
-              "project": true
-            },
-            "indexByName": {
-              "Time": 3,
-              "Value": 17,
-              "__name__": 4,
-              "assessments_enabled": 12,
-              "created_at": 8,
-              "current_run": 18,
-              "current_run_created_at": 14,
-              "current_run_status": 13,
-              "description": 2,
-              "environment": 19,
-              "id": 1,
-              "instance": 15,
-              "job": 16,
-              "name": 0,
-              "organization": 20,
-              "policy_check_failures": 11,
-              "project": 5,
-              "resource_count": 6,
-              "run_failures": 9,
-              "runs_count": 7,
-              "terraform_version": 10
-            },
-            "renameByName": {
-              "resource_count": ""
-            }
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "number",
-                "targetField": "resource_count"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "runs_count"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "policy_check_failures"
-              },
-              {
-                "destinationType": "boolean",
-                "targetField": "assessments_enabled"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "run_failures"
-              }
-            ],
-            "fields": {}
-          }
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 4,
-        "x": 17,
-        "y": 5
+        "x": 5,
+        "y": 18
       },
       "id": 52,
       "options": {
@@ -802,7 +1223,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -810,8 +1231,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_workspaces_info{organization=\"$organizations\"}",
+          "editorMode": "code",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -948,10 +1369,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 21,
-        "y": 5
+        "h": 9,
+        "w": 4,
+        "x": 9,
+        "y": 18
       },
       "id": 24,
       "options": {
@@ -971,7 +1392,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -979,8 +1400,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_workspaces_info{organization=\"$organizations\"}",
+          "editorMode": "code",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -1071,511 +1492,6 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "Total number of organizations.",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "yellow",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 3,
-        "x": 0,
-        "y": 10
-      },
-      "id": 15,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "sum(tf_organizations_info{name=~\"$organizations\"})",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Organization Count",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Total number of Teams",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "yellow",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 3,
-        "x": 3,
-        "y": 10
-      },
-      "id": 8,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "builder",
-          "expr": "sum(tf_teams_info{})",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Teams Count",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Total number of Users",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "yellow",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 3,
-        "x": 6,
-        "y": 10
-      },
-      "id": 28,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "/^users_count$/",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "count by(users_count) (tf_teams_info)",
-          "format": "table",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Users count",
-      "transformations": [
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "number",
-                "targetField": "users_count"
-              }
-            ],
-            "fields": {}
-          }
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Total number of Teams",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "yellow",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 200
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "id"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 256
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 9,
-        "y": 10
-      },
-      "id": 20,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "builder",
-          "expr": "tf_teams_info{}",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Teams Summary",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Value": true,
-              "__name__": true,
-              "instance": true,
-              "job": true
-            },
-            "indexByName": {
-              "Time": 0,
-              "Value": 7,
-              "__name__": 1,
-              "id": 3,
-              "instance": 5,
-              "job": 6,
-              "name": 2,
-              "users_count": 4
-            },
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "green",
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 7,
-        "x": 17,
-        "y": 10
-      },
-      "id": 29,
-      "options": {
-        "displayLabels": [
-          "name"
-        ],
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": [
-            "value",
-            "percent"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum by(assessments_enabled) (tf_workspaces_info{organization=~\"$organizations\", current_run_status=~\"$workspace_status\"})",
-          "format": "time_series",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "{{current_run_status}}",
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Drift Detection & Continuous Validation Enabled",
-      "transformations": [
-        {
-          "id": "convertFieldType",
-          "options": {}
-        }
-      ],
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Total number of workspaces.",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "yellow",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 3,
-        "x": 0,
-        "y": 17
-      },
-      "id": 21,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "sum(tf_workspaces_info{organization=~\"$organizations\",current_run_status=~\"$workspace_status\"})",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Workspace Count",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1595,85 +1511,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 9,
-        "x": 3,
-        "y": 17
-      },
-      "id": 18,
-      "options": {
-        "displayLabels": [
-          "name"
-        ],
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": [
-            "value",
-            "percent"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "expr": "sum by(current_run_status)(tf_workspaces_info{organization=~\"$organizations\",current_run_status=~\"$workspace_status\"})",
-          "format": "time_series",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "{{current_run_status}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Workspace Status Overview",
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 17
+        "h": 9,
+        "w": 11,
+        "x": 13,
+        "y": 18
       },
       "id": 48,
       "options": {
@@ -1703,7 +1544,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -1711,8 +1552,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum by(terraform_version) (tf_workspaces_info{organization=~\"$organizations\", current_run_status=~\"$workspace_status\"})",
+          "editorMode": "code",
+          "expr": "sum by(terraform_version) (tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -1731,16 +1572,180 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 13,
+        "x": 0,
+        "y": 27
+      },
+      "id": 18,
+      "options": {
+        "displayLabels": [
+          "name"
+        ],
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum by(current_run_status)(tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
+          "format": "time_series",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{current_run_status}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Workspace Status Overview",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 11,
+        "x": 13,
+        "y": 27
+      },
+      "id": 29,
+      "options": {
+        "displayLabels": [
+          "name"
+        ],
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "sum by(assessments_enabled) (tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
+          "format": "time_series",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{current_run_status}}",
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Drift Detection & Continuous Validation Enabled",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {}
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": "auto",
+            "align": "center",
             "cellOptions": {
-              "type": "auto"
+              "type": "auto",
+              "wrapText": false
             },
             "filterable": true,
-            "inspect": false
+            "inspect": true
           },
           "mappings": [],
           "thresholds": {
@@ -1834,7 +1839,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 201
+                "value": 144
               }
             ]
           },
@@ -1865,16 +1870,17 @@
         ]
       },
       "gridPos": {
-        "h": 12,
+        "h": 16,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 39
       },
       "id": 6,
       "options": {
         "cellHeight": "sm",
         "footer": {
           "countRows": false,
+          "enablePagination": false,
           "fields": "",
           "reducer": [
             "sum"
@@ -1884,14 +1890,15 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "tf_workspaces_info{organization=~\"$organizations\",current_run_status=~\"$workspace_status\"}",
+          "editorMode": "code",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1937,35 +1944,35 @@
               "environment": true,
               "instance": true,
               "job": true,
-              "organization": false,
+              "organization": true,
               "project": false,
               "rum_count": false
             },
             "includeByName": {},
             "indexByName": {
-              "Successful Runs": 9,
-              "Time": 14,
+              "Successful Runs": 11,
+              "Time": 16,
               "Value": 22,
-              "__name__": 16,
-              "assessments_enabled": 13,
-              "created_at": 15,
-              "current_run": 17,
+              "__name__": 18,
+              "assessments_enabled": 15,
+              "created_at": 17,
+              "current_run": 12,
               "current_run_created_at": 19,
-              "current_run_status": 18,
-              "description": 6,
-              "environment": 7,
-              "id": 2,
+              "current_run_status": 13,
+              "description": 1,
+              "environment": 10,
+              "id": 3,
               "instance": 20,
               "job": 21,
-              "name": 1,
-              "organization": 0,
-              "policy_check_failures": 12,
-              "project": 3,
-              "resource_count": 5,
-              "rum_count": 4,
-              "run_failures": 11,
-              "runs_count": 10,
-              "terraform_version": 8
+              "name": 0,
+              "organization": 2,
+              "policy_check_failures": 14,
+              "project": 4,
+              "resource_count": 9,
+              "rum_count": 5,
+              "run_failures": 8,
+              "runs_count": 6,
+              "terraform_version": 7
             },
             "renameByName": {
               "resource_count": "Resource Count",
@@ -2073,7 +2080,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 37
+        "y": 55
       },
       "id": 35,
       "options": {
@@ -2088,7 +2095,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -2096,8 +2103,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "count(tf_workspaces_info{organization=\"$organizations\"})",
+          "editorMode": "code",
+          "expr": "count(tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "interval": "",
@@ -2175,7 +2182,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 37
+        "y": 55
       },
       "id": 50,
       "options": {
@@ -2190,14 +2197,15 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum by(current_run_status)(tf_workspaces_info{organization=~\"$organizations\",current_run_status=~\"$workspace_status\"})",
+          "editorMode": "code",
+          "expr": "sum by(current_run_status)(tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
           "instant": false,
           "interval": "",
           "legendFormat": "{{current_run_status}}",
@@ -2235,7 +2243,7 @@
         "h": 9,
         "w": 5,
         "x": 0,
-        "y": 45
+        "y": 63
       },
       "id": 44,
       "options": {
@@ -2255,7 +2263,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -2263,8 +2271,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_workspaces_info{organization=\"$organizations\"}",
+          "editorMode": "code",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -2363,7 +2371,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "yellow",
+            "fixedColor": "semi-dark-purple",
             "mode": "shades"
           },
           "custom": {
@@ -2373,7 +2381,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "fillOpacity": 80,
-            "gradientMode": "none",
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -2387,6 +2395,7 @@
               "mode": "dashed"
             }
           },
+          "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
             "mode": "percentage",
@@ -2400,78 +2409,23 @@
                 "value": 90
               }
             ]
-          }
+          },
+          "unit": "short"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "description"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "id"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "name"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Resource Under Management (RUM) "
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "RUM"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "policy_check_failures"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "terraform_version"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Successful Runs"
-            },
-            "properties": []
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 9,
-        "w": 12,
+        "w": 19,
         "x": 5,
-        "y": 45
+        "y": 63
       },
       "id": 47,
       "options": {
-        "barRadius": 0.2,
-        "barWidth": 0.47,
-        "fullHighlight": false,
+        "barRadius": 0.15,
+        "barWidth": 0.59,
+        "colorByField": "RUM",
+        "fullHighlight": true,
         "groupWidth": 0.7,
         "legend": {
           "calcs": [],
@@ -2479,18 +2433,18 @@
           "placement": "bottom",
           "showLegend": true
         },
-        "orientation": "horizontal",
+        "orientation": "vertical",
         "showValue": "always",
         "stacking": "none",
         "tooltip": {
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "asc"
         },
         "xField": "name",
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -2498,8 +2452,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_workspaces_info{organization=~\"$organizations\", current_run_status=~\"$workspace_status\", rum_count!=\"0\"}",
+          "editorMode": "code",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\",rum_count!=\"0\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -2511,24 +2465,8 @@
           "useBackend": false
         }
       ],
-      "title": "Workspace RUM Breakdown",
+      "title": "Workspace RUM Breakdown (w/ 90% Threshold)",
       "transformations": [
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Successful Runs",
-            "binary": {
-              "left": "runs_count",
-              "operator": "-",
-              "reducer": "sum",
-              "right": "run_failures"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
         {
           "id": "organize",
           "options": {
@@ -2606,194 +2544,6 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "Total number of Registry Modules",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "yellow",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 7,
-        "x": 17,
-        "y": 45
-      },
-      "id": 36,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum(tf_registrymodules_info{organization=\"$organizations\"})",
-          "format": "table",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Registry Modules Count",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Registry Modules - No Code Distribution",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": []
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 7,
-        "x": 17,
-        "y": 50
-      },
-      "id": 38,
-      "options": {
-        "displayLabels": [
-          "name"
-        ],
-        "legend": {
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": [
-            "value",
-            "percent"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^Value$/",
-          "values": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "count by(no_code) (tf_registrymodules_info{organization=\"$organizations\"})",
-          "format": "table",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Registry Modules - No Code Distribution",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "instance": true,
-              "job": true
-            },
-            "indexByName": {
-              "Time": 0,
-              "Value": 14,
-              "__name__": 1,
-              "created_at": 10,
-              "description": 3,
-              "global": 6,
-              "id": 4,
-              "instance": 12,
-              "job": 13,
-              "kind": 5,
-              "name": 2,
-              "policy_count": 7,
-              "project_count": 8,
-              "updated_at": 11,
-              "workspace_count": 9
-            },
-            "renameByName": {}
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [],
-            "fields": {}
-          }
-        }
-      ],
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -2814,10 +2564,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 9,
+        "h": 11,
+        "w": 13,
         "x": 0,
-        "y": 54
+        "y": 72
       },
       "id": 49,
       "options": {
@@ -2847,7 +2597,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -2856,7 +2606,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "tf_workspaces_info{organization=~\"$organizations\", current_run_status=~\"$workspace_status\", rum_count!=\"0\"}",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\",rum_count!=\"0\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -2966,20 +2716,19 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 8,
-        "x": 9,
-        "y": 54
+        "h": 11,
+        "w": 11,
+        "x": 13,
+        "y": 72
       },
       "id": 51,
       "options": {
         "displayLabels": [
           "name",
-          "value",
           "percent"
         ],
         "legend": {
-          "displayMode": "list",
+          "displayMode": "table",
           "placement": "right",
           "showLegend": true,
           "values": [
@@ -2987,7 +2736,7 @@
             "value"
           ]
         },
-        "pieType": "pie",
+        "pieType": "donut",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -3001,7 +2750,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -3009,8 +2758,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_workspaces_info{organization=~\"$organizations\", current_run_status=~\"$workspace_status\", rum_count!=\"0\"}",
+          "editorMode": "code",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\", rum_count!=\"0\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3119,10 +2868,83 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "Policy Type Distribution",
+      "description": "Total number of Registry Modules",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 5,
+        "x": 0,
+        "y": 83
+      },
+      "id": 36,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "sum(tf_registrymodules_info{organization=\"$organizations\"})",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Registry Modules Count",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Registry Modules - No Code Distribution",
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "text",
             "mode": "palette-classic"
           },
           "custom": {
@@ -3137,15 +2959,17 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 7,
-        "x": 17,
-        "y": 59
+        "x": 5,
+        "y": 83
       },
-      "id": 32,
+      "id": 38,
       "options": {
         "displayLabels": [
-          "name"
+          "name",
+          "value",
+          "percent"
         ],
         "legend": {
           "displayMode": "table",
@@ -3169,7 +2993,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -3178,7 +3002,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "sum by(kind) (tf_policysets_info{organization=\"$organizations\"})",
+          "expr": "count by(no_code) (tf_registrymodules_info{organization=\"$organizations\"})",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3189,7 +3013,7 @@
           "useBackend": false
         }
       ],
-      "title": "Policy Type Distribution",
+      "title": "Registry Modules - No Code Distribution",
       "transformations": [
         {
           "id": "organize",
@@ -3223,25 +3047,263 @@
         {
           "id": "convertFieldType",
           "options": {
-            "conversions": [
-              {
-                "destinationType": "number",
-                "targetField": "policy_count"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "project_count"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "workspace_count"
-              }
-            ],
+            "conversions": [],
             "fields": {}
           }
         }
       ],
       "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Registry Modules - Provider Distribution",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 83
+      },
+      "id": 39,
+      "options": {
+        "displayLabels": [
+          "name",
+          "value",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Value$/",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "count by(provider) (tf_registrymodules_info{organization=\"$organizations\"})",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Registry Modules - Provider Distribution",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "instance": true,
+              "job": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 14,
+              "__name__": 1,
+              "created_at": 10,
+              "description": 3,
+              "global": 6,
+              "id": 4,
+              "instance": 12,
+              "job": 13,
+              "kind": 5,
+              "name": 2,
+              "policy_count": 7,
+              "project_count": 8,
+              "updated_at": 11,
+              "workspace_count": 9
+            },
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Registry Modules Summary",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto",
+              "wrapText": false
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 198
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 93
+      },
+      "id": 37,
+      "options": {
+        "cellHeight": "md",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "tf_registrymodules_info{organization=\"$organizations\"}",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Registry Modules Summary",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "instance": true,
+              "job": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 11,
+              "__name__": 1,
+              "created_at": 6,
+              "id": 9,
+              "instance": 8,
+              "job": 10,
+              "name": 2,
+              "no_code": 4,
+              "provider": 3,
+              "registry_name": 5,
+              "status": 12,
+              "updated_at": 7
+            },
+            "renameByName": {
+              "registry_name": ""
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "datasource": {
@@ -3269,10 +3331,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 8,
         "w": 5,
         "x": 0,
-        "y": 64
+        "y": 106
       },
       "id": 16,
       "options": {
@@ -3292,7 +3354,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -3381,10 +3443,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 12,
+        "h": 8,
+        "w": 19,
         "x": 5,
-        "y": 64
+        "y": 106
       },
       "id": 34,
       "options": {
@@ -3399,7 +3461,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -3426,127 +3488,11 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "Registry Modules - Provider Distribution",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": []
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 7,
-        "x": 17,
-        "y": 67
-      },
-      "id": 39,
-      "options": {
-        "displayLabels": [
-          "name"
-        ],
-        "legend": {
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": [
-            "value",
-            "percent"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^Value$/",
-          "values": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "count by(provider) (tf_registrymodules_info{organization=\"$organizations\"})",
-          "format": "table",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Registry Modules - Provider Distribution",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "instance": true,
-              "job": true
-            },
-            "indexByName": {
-              "Time": 0,
-              "Value": 14,
-              "__name__": 1,
-              "created_at": 10,
-              "description": 3,
-              "global": 6,
-              "id": 4,
-              "instance": 12,
-              "job": 13,
-              "kind": 5,
-              "name": 2,
-              "policy_count": 7,
-              "project_count": 8,
-              "updated_at": 11,
-              "workspace_count": 9
-            },
-            "renameByName": {}
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [],
-            "fields": {}
-          }
-        }
-      ],
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
       "description": "Summary of Projects",
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": "auto",
+            "align": "center",
             "cellOptions": {
               "type": "auto"
             },
@@ -3568,9 +3514,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 17,
+        "w": 24,
         "x": 0,
-        "y": 69
+        "y": 114
       },
       "id": 19,
       "options": {
@@ -3591,7 +3537,7 @@
           }
         ]
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -3624,12 +3570,16 @@
               "instance": true,
               "job": true
             },
+            "includeByName": {},
             "indexByName": {
               "Time": 3,
               "Value": 4,
               "__name__": 5,
               "id": 1,
-              "name": 0
+              "instance": 6,
+              "job": 7,
+              "name": 0,
+              "organization": 2
             },
             "renameByName": {}
           }
@@ -3663,10 +3613,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 5,
         "x": 0,
-        "y": 77
+        "y": 122
       },
       "id": 30,
       "options": {
@@ -3686,7 +3636,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -3734,10 +3684,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 7,
         "x": 5,
-        "y": 77
+        "y": 122
       },
       "id": 25,
       "options": {
@@ -3757,7 +3707,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -3857,7 +3807,136 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "Registry Modules Summary",
+      "description": "Policy Type Distribution",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 122
+      },
+      "id": 32,
+      "options": {
+        "displayLabels": [
+          "name"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Value$/",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "sum by(kind) (tf_policysets_info{organization=\"$organizations\"})",
+          "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Policy Type Distribution",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "instance": true,
+              "job": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "Value": 14,
+              "__name__": 1,
+              "created_at": 10,
+              "description": 3,
+              "global": 6,
+              "id": 4,
+              "instance": 12,
+              "job": 13,
+              "kind": 5,
+              "name": 2,
+              "policy_count": 7,
+              "project_count": 8,
+              "updated_at": 11,
+              "workspace_count": 9
+            },
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "policy_count"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "project_count"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "workspace_count"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "description": "Policy Set Summary",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3886,28 +3965,15 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 198
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 77
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 132
       },
-      "id": 37,
+      "id": 31,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3918,10 +3984,9 @@
           ],
           "show": true
         },
-        "showHeader": true,
-        "sortBy": []
+        "showHeader": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -3930,7 +3995,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "tf_registrymodules_info{organization=\"$organizations\"}",
+          "expr": "tf_policysets_info{organization=\"$organizations\"}",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3941,42 +4006,54 @@
           "useBackend": false
         }
       ],
-      "title": "Registry Modules Summary",
+      "title": "Policy Set Summary",
       "transformations": [
         {
           "id": "organize",
           "options": {
             "excludeByName": {
               "Time": true,
-              "Value": true,
               "__name__": true,
               "instance": true,
               "job": true
             },
             "indexByName": {
               "Time": 0,
-              "Value": 11,
+              "Value": 14,
               "__name__": 1,
-              "created_at": 6,
-              "id": 9,
-              "instance": 8,
-              "job": 10,
+              "created_at": 10,
+              "description": 3,
+              "global": 6,
+              "id": 4,
+              "instance": 12,
+              "job": 13,
+              "kind": 5,
               "name": 2,
-              "no_code": 4,
-              "provider": 3,
-              "registry_name": 5,
-              "status": 12,
-              "updated_at": 7
+              "policy_count": 7,
+              "project_count": 8,
+              "updated_at": 11,
+              "workspace_count": 9
             },
-            "renameByName": {
-              "registry_name": ""
-            }
+            "renameByName": {}
           }
         },
         {
           "id": "convertFieldType",
           "options": {
-            "conversions": [],
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "policy_count"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "project_count"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "workspace_count"
+              }
+            ],
             "fields": {}
           }
         }
@@ -4028,7 +4105,7 @@
         "h": 10,
         "w": 4,
         "x": 0,
-        "y": 85
+        "y": 143
       },
       "id": 4,
       "options": {
@@ -4048,7 +4125,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -4130,9 +4207,9 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 8,
+        "w": 20,
         "x": 4,
-        "y": 85
+        "y": 143
       },
       "id": 2,
       "options": {
@@ -4147,7 +4224,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -4162,135 +4239,6 @@
       ],
       "title": "Exporter Duration Stats",
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "description": "Policy Set Summary",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "yellow",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 85
-      },
-      "id": 31,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": true
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_policysets_info{organization=\"$organizations\"}",
-          "format": "table",
-          "fullMetaSearch": false,
-          "includeNullMetadata": true,
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A",
-          "useBackend": false
-        }
-      ],
-      "title": "Policy Set Summary",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "instance": true,
-              "job": true
-            },
-            "indexByName": {
-              "Time": 0,
-              "Value": 14,
-              "__name__": 1,
-              "created_at": 10,
-              "description": 3,
-              "global": 6,
-              "id": 4,
-              "instance": 12,
-              "job": 13,
-              "kind": 5,
-              "name": 2,
-              "policy_count": 7,
-              "project_count": 8,
-              "updated_at": 11,
-              "workspace_count": 9
-            },
-            "renameByName": {}
-          }
-        },
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "destinationType": "number",
-                "targetField": "policy_count"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "project_count"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "workspace_count"
-              }
-            ],
-            "fields": {}
-          }
-        }
-      ],
-      "type": "table"
     }
   ],
   "preload": false,
@@ -4334,13 +4282,13 @@
         },
         "definition": "tf_workspaces_info",
         "includeAll": true,
-        "label": "status",
+        "label": "project",
         "multi": true,
-        "name": "workspace_sstatus",
+        "name": "project",
         "options": [],
         "query": "tf_workspaces_info",
         "refresh": 1,
-        "regex": "/.*current_run_status=\"([^\"]*).*/",
+        "regex": "/.*project=\"([^\"]*).*/",
         "sort": 1,
         "type": "query"
       }
