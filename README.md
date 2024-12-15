@@ -10,6 +10,8 @@
 ![dashboard](img/tfbi_2.png)
 ![dashboard](img/tfbi_3.png)
 ![dashboard](img/tfbi_4.png)
+![dashboard](img/tfbi_5.png)
+
 ## Metrics
 
 | API/Category | Metric Name | Type | Description | Implementation Status
@@ -33,6 +35,8 @@
 | Resources  | Current Total Resources | `Gauge` | Number of Total Resources  |  ✅  |
 | Resources  | Current Total Resources Under Management(RUM) | `Gauge` | Number of Total Resources  |  ✅  |
 | Resources  | Workspace RUM Breakdown | `Chart` | Breadkdown of RUM usage by Workspace |  ✅  |
+| Resources  | Workspace RUM Breakdown | `Table` | Breadkdown of RUM usage by Workspace |  ✅  |
+| Resources  | Project RUM Breakdown | `Chart` | Breadkdown of RUM usage by Project |  ✅  |
 | Policy Sets | Policy Set Count | `Gauge` | Current number of active policy sets organization  |  ✅  | 
 | Policy Sets | Total Policy Check Failures | `Counter` | Total number of policy check failures  |  ✅  | 
 | Policy Sets | Policy Set Summary | `Table` | Policy Sets Summary  |  ✅  | 
@@ -79,6 +83,36 @@ $ docker compose up -d
 4. Now you can access the dashboard using http://localhost:3000
 
 > Note: It's recommended to create a Grafana user/password and login using it, otherwise you'll continue receiving auth warning logs in Grafan.
+
+
+## Local Development & Contribution
+
+There is a development docker compose file (`docker-compose.dev.yml`) that makes it easier to do active development with hot-reload that takes care of rebuilding the `tfbi-exporter` binary. You can spin up the stack for local development by running the following. Any time you change and save the code it will rebuild the binary and restart the process (without rebuilding the docker image) making it easier to do active local development.
+
+```
+$  docker compose -f docker-compose.dev.yml up -d
+
+[+] Running 7/7
+ ✔ Network tfbi_default           Created                                                                                                                                        0.0s 
+ ✔ Volume "tfbi_go-modules"       Created                                                                                                                                        0.0s 
+ ✔ Volume "tfbi_prometheus_data"  Created                                                                                                                                        0.0s 
+ ✔ Volume "tfbi_grafana_data"     Created                                                                                                                                        0.0s 
+ ✔ Container tfbi-exporter-1      Started                                                                                                                                        0.3s 
+ ✔ Container tfbi-grafana-1       Started                                                                                                                                        0.3s 
+ ✔ Container tfbi-prometheus-1    Started 
+
+
+$ docker compose -f docker-compose.dev.yml logs -f exporter 
+exporter-1  | Building...
+exporter-1  | go: downloading github.com/prometheus/client_golang v1.20.5
+exporter-1  | go: downloading github.com/go-kit/kit v0.13.0
+exporter-1  | go: downloading github.com/hashicorp/go-tfe v1.70.0
+....
+exporter-1  | level=info TFBI=2024-12-12T17:04:09.944Z caller=main.go:61 msg="Starting tf_exporter" version=
+exporter-1  | level=debug TFBI=2024-12-12T17:04:09.944Z caller=main.go:62 msg="Build Context" go=go1.23.3 date=
+exporter-1  | level=info TFBI=2024-12-12T17:04:09.944Z caller=main.go:76 msg="Listening on address" address=0.0.0.0:9100
+```
+
 
 ## Credits
 
