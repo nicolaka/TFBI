@@ -51,22 +51,17 @@
 
 0. Clone this repo. 
 1. Create a [Terraform Cloud or Enterprise API Token](https://app.terraform.io/app/settings/tokens)
-2. Export your token and the name of your TFC Org:
+2. Export your TFC/TFE API Token, name of organization(s), and the TFC/TFE API address:
 
 ```
 export TF_API_TOKEN="TOKEN"
 export TF_ORGANIZATIONS="ORG_NAME"
+export TFE_ADDRESS="https://app.terraform.io"  # For TFE, substitute with TFE address instead
 ```
 
 > NOTE: TFBI supports scraping multiple orgs, you can simply add the organization names as a list (e.g `TF_ORGANIZATIONS="ORG_1,ORG_2,ORG_3"` ) 
 
-3. If you're using TFBI with Terraform Enterprise (TFE), edit `docker-compose.yml` file and uncomment `TFE_ADDRESS` and add the TFE address there as an environment variable 
-
-```
-export TFE_ADDRESS="https://TFE_ADDRESS"
-```
-
-4. Spin up the application using Docker Compose
+3. Spin up the application using Docker Compose
 
 ```
 
@@ -80,9 +75,11 @@ $ docker compose up -d
 
 ```
 
-4. Now you can access the dashboard using http://localhost:3000
+4. Now you can access the dashboard using http://localhost:3000, and navigate to *Terraform Cloud Business Insights (TFBI)* Dashboard
 
-> Note: It's recommended to create a Grafana user/password and login using it, otherwise you'll continue receiving auth warning logs in Grafan.
+> Note: It's recommended to create a Grafana user/password and login using it, otherwise you'll continue receiving auth warning logs in Grafana.
+
+> Note: You can also access Prometheus on http://localhost:9090 to explore the collected metrics. 
 
 
 ## Local Development & Contribution
