@@ -2,7 +2,7 @@ FROM golang:1.23-alpine  AS build
 
 WORKDIR /go/src/github.com/nicolaka/tfbi
 
-ARG tag="v0.3"
+ARG tag="v0.4"
 
 COPY . .
 

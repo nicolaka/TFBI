@@ -3,7 +3,7 @@ group "default" {
 }
 
 variable "TAG" {
-  default = "v0.3"
+  default = "v0.4"
 }
 
 target "tfbi-exporter" {
