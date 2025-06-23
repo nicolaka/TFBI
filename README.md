@@ -78,8 +78,18 @@ $ docker compose up -d
 4. Now you can access the dashboard using http://localhost:3000, and navigate to *Terraform Cloud Business Insights (TFBI)* Dashboard
 
 > Note: It's recommended to create a Grafana user/password and login using it, otherwise you'll continue receiving auth warning logs in Grafana.
-
 > Note: You can also access Prometheus on http://localhost:9090 to explore the collected metrics. 
+
+5. Depending on the number of organizations you have and number of workspaces, projects, modules per organization, you might need to tweak the `scrape_interval` and `scrape_timeout` in `prometheus/prometheus.yml` as follows. Default is 5m (interval) and 3m(timeout).
+
+| Organization Size	| scrape_interval	| scrape_timeout 
+| - | - | - | 
+Small (up to 500 Workspaces) |	1–5m	| 1–2m
+Medium (500-2500 Workspaces) |	5–10m |	3–5m
+Large (2500+ Workspaces) |	10–30m	| 5–15m
+
+
+
 
 
 ## Local Development & Contribution

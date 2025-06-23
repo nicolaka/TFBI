@@ -105,26 +105,33 @@ func getWorkspacesListPage(ctx context.Context, page int, organization string, c
 
 // Scrape collects data from Terraform API and sends it over channel as prometheus metric.
 func (ScrapeWorkspaces) Scrape(ctx context.Context, config *setup.Config, ch chan<- prometheus.Metric) error {
+	const maxConcurrentPageFetches = 100 // tune as needed
 	g, ctx := errgroup.WithContext(ctx)
+	sem := make(chan struct{}, maxConcurrentPageFetches)
+
 	for _, name := range config.Organizations {
 		name := name
 		g.Go(func() error {
 			workspacesList, err := config.Client.Workspaces.List(ctx, name, &tfe.WorkspaceListOptions{
 				ListOptions: tfe.ListOptions{
 					PageSize: pageSize,
-				}})
+				},
+			})
 
 			if err != nil {
 				return fmt.Errorf("%v, organization=%s", err, name)
 			}
 
+			pageErrs, pageCtx := errgroup.WithContext(ctx)
 			for i := 1; i <= workspacesList.Pagination.TotalPages; i++ {
-				if err := getWorkspacesListPage(ctx, i, name, config, ch); err != nil {
-					return err
-				}
+				i := i
+				pageErrs.Go(func() error {
+					sem <- struct{}{} // acquire
+					defer func() { <-sem }() // release
+					return getWorkspacesListPage(pageCtx, i, name, config, ch)
+				})
 			}
-
-			return nil
+			return pageErrs.Wait()
 		})
 	}
 
