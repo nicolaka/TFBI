@@ -6,6 +6,7 @@
 
 **Summary:** Terraform Cloud Business Insights (TFBI) is a tool that provides business, operational, and adoption insights for Terraform Cloud/Enterprise operators. It implements both custom Prometheus collectors and metrics to query the Terraform Cloud/Enterprise API using [go-tfe](https://pkg.go.dev/github.com/hashicorp/go-tfe) Go libary and a Grafana dashboard to easily explore common business, operational, and adoption metrics. 
 
+![arch](img/arch.png)
 ![dashboard](img/tfbi_1.png)
 ![dashboard](img/tfbi_2.png)
 ![dashboard](img/tfbi_3.png)
