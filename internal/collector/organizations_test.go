@@ -58,7 +58,7 @@ func TestScrapeOrganizations(t *testing.T) {
 	}()
 
 	counterExpected := []MetricResult{
-		{labels: labelMap{"created_at": "1010-10-10 10:10:10.101 +0000 UTC", "email": "test-email", "external_id": "test-external-id", "name": "test-org", "owners_team_saml_role_id": "test-role-id", "saml_enabled": "true", "two_factor_conformant": "false"}, value: 1, metricType: dto.MetricType_GAUGE},
+		{labels: labelMap{"created_at": "1010-10-10 10:10:10.101 +0000 UTC", "email": "test-email", "external_id": "test-external-id", "name": "test-org", "owners_team_saml_role_id": "test-role-id", "saml_enabled": "true", "two_factor_conformant": "false", "assessment_enforced": "false"}, value: 1, metricType: dto.MetricType_GAUGE},
 	}
 	convey.Convey("Metrics comparison", t, func() {
 		for _, expect := range counterExpected {

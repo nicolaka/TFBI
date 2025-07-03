@@ -40,6 +40,8 @@ datasources:
      graphiteVersion: "1.1"
      tlsAuth: false
      tlsAuthWithCACert: false
+     timeInterval: 10m
+     timeout: 8m
   # <string> json object of data that will be encrypted.
   secureJsonData:
     tlsCACert: "..."
@@ -48,3 +50,4 @@ datasources:
   version: 1
   # <bool> allow users to edit datasources from the UI.
   editable: true
+

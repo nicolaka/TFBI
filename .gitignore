@@ -21,3 +21,7 @@ tfbi
 
 # Other
 .DS_Store
+.tfstate
+.tfvars
+
+

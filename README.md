@@ -81,7 +81,7 @@ $ docker compose up -d
 > Note: It's recommended to create a Grafana user/password and login using it, otherwise you'll continue receiving auth warning logs in Grafana.
 > Note: You can also access Prometheus on http://localhost:9090 to explore the collected metrics. 
 
-5. Depending on the number of organizations you have and number of workspaces, projects, modules per organization, you might need to tweak the `scrape_interval` and `scrape_timeout` in `prometheus/prometheus.yml` as follows. Default is 5m (interval) and 3m(timeout).
+5. Depending on the number of organizations you have and number of workspaces, projects, modules per organization, you might need to tweak the `scrape_interval` and `scrape_timeout` in `prometheus/prometheus.yml` as follows. Default is 10m (interval) and 8m(timeout).
 
 | Organization Size	| scrape_interval	| scrape_timeout 
 | - | - | - | 

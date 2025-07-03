@@ -1,0 +1,241 @@
+package collector
+
+import (
+	"context"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
+	"github.com/nicolaka/tfbi/internal/setup"
+
+	tfe "github.com/hashicorp/go-tfe"
+
+	"github.com/prometheus/client_golang/prometheus"
+	dto "github.com/prometheus/client_model/go"
+
+	"github.com/smartystreets/goconvey/convey"
+
+	"errors"
+	"strings"
+	"time"
+)
+
+func TestScrapeWorkspaces(t *testing.T) {
+	mockAPI := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{
+			"meta":{
+				"pagination":{"current-page":1,"prev-page":null,"next-page":null,"total-pages":1,"total-count":2}
+			},
+			"data":[{
+				"id":"test-id-1",
+				"type":"workspaces",
+				"attributes":{
+					"name":"dev",
+					"created-at":"1010-10-10T10:10:10.101Z",
+					"environment":"test-environment",
+					"terraform-version":"0.14.3",
+					"latest-change-at":"2020-10-10T10:10:10.101Z"
+				},
+				"relationships":{
+					"organization":{"data":{"id":"test-org","type":"organizations"}},
+					"current-run":{
+						"data":{
+							"id":"run-id-1",
+							"type":"runs",
+							"attributes": {
+								"created-at":"1010-10-10T10:10:10.101Z",
+								"status": "applied"
+							}
+						}
+					}
+				}
+			}, {
+				"id":"test-id-2",
+				"type":"workspaces",
+				"attributes":{
+					"name":"stg",
+					"created-at":"1010-10-10T10:10:10.101Z",
+					"environment":"test-environment",
+					"terraform-version":"0.14.2",
+					"latest-change-at":"2020-10-10T10:10:10.101Z"
+				},
+				"relationships":{
+					"organization":{"data":{"id":"test-org","type":"organizations"}}
+				}
+			}]
+		}`))
+	}))
+	defer mockAPI.Close()
+
+	client, err := tfe.NewClient(&tfe.Config{
+		Address: mockAPI.URL,
+		Token:   "test",
+	})
+	if err != nil {
+		t.Fatalf("error creating a stub api client: %s", err)
+	}
+
+	config := &setup.Config{
+		Client: *client,
+		CLI:    setup.CLI{Organizations: []string{"test-org"}},
+	}
+
+	ch := make(chan prometheus.Metric)
+	go func() {
+		defer close(ch)
+		if err = (ScrapeWorkspaces{}).Scrape(context.Background(), config, ch); err != nil {
+			t.Errorf("error calling function on test: %s", err)
+		}
+	}()
+
+	counterExpected := []MetricResult{
+		{labels: labelMap{"created_at": "1010-10-10 10:10:10.101 +0000 UTC", "current_run": "run-id-1", "current_run_status": "applied", "current_run_created_at": "1010-10-10 10:10:10.101 +0000 UTC", "environment": "test-environment", "id": "test-id-1", "name": "dev", "organization": "test-org", "terraform_version": "0.14.3"}, value: 1, metricType: dto.MetricType_GAUGE},
+		{labels: labelMap{"created_at": "1010-10-10 10:10:10.101 +0000 UTC", "current_run": "na", "current_run_status": "na", "current_run_created_at": "na", "environment": "test-environment", "id": "test-id-2", "name": "stg", "organization": "test-org", "terraform_version": "0.14.2"}, value: 1, metricType: dto.MetricType_GAUGE},
+	}
+	convey.Convey("Metrics comparison", t, func() {
+		for _, expect := range counterExpected {
+			got := readMetric(<-ch)
+			convey.So(got, convey.ShouldResemble, expect)
+		}
+	})
+}
+
+func TestGetCurrentRunHelpers(t *testing.T) {
+	run := &tfe.Run{ID: "run-1", Status: "planned", CreatedAt: time.Date(2023, 1, 1, 12, 0, 0, 0, time.UTC)}
+	var nilRun *tfe.Run
+
+	convey.Convey("getCurrentRunID", t, func() {
+		convey.So(getCurrentRunID(run), convey.ShouldEqual, "run-1")
+		convey.So(getCurrentRunID(nilRun), convey.ShouldEqual, "na")
+	})
+	convey.Convey("getCurrentRunStatus", t, func() {
+		convey.So(getCurrentRunStatus(run), convey.ShouldEqual, "planned")
+		convey.So(getCurrentRunStatus(nilRun), convey.ShouldEqual, "na")
+	})
+	convey.Convey("getCurrentRunCreatedAt", t, func() {
+		convey.So(getCurrentRunCreatedAt(run), convey.ShouldEqual, "2023-01-01 12:00:00 +0000 UTC")
+		convey.So(getCurrentRunCreatedAt(nilRun), convey.ShouldEqual, "na")
+	})
+}
+
+func TestGetCurrentRUM(t *testing.T) {
+	count := uint32(5)
+	state := &tfe.StateVersion{BillableRUMCount: &count}
+	var nilState *tfe.StateVersion
+	stateNoRUM := &tfe.StateVersion{}
+
+	convey.Convey("getCurrentRUM", t, func() {
+		convey.So(getCurrentRUM(state), convey.ShouldEqual, "5")
+		convey.So(getCurrentRUM(nilState), convey.ShouldEqual, "0")
+		convey.So(getCurrentRUM(stateNoRUM), convey.ShouldEqual, "0")
+	})
+}
+
+func TestScrapeWorkspaces_EdgeCases(t *testing.T) {
+	// Mock API with missing optional fields
+	mockAPI := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{
+			"meta":{
+				"pagination":{"current-page":1,"prev-page":null,"next-page":null,"total-pages":1,"total-count":1}
+			},
+			"data":[{
+				"id":"test-id-3",
+				"type":"workspaces",
+				"attributes":{
+					"name":"edge",
+					"created-at":"2022-01-01T00:00:00Z",
+					"environment":"edge-env",
+					"terraform-version":"1.0.0"
+				},
+				"relationships":{
+					"organization":{"data":{"id":"test-org","type":"organizations"}}
+				}
+			}]
+		}`))
+	}))
+	defer mockAPI.Close()
+
+	client, _ := tfe.NewClient(&tfe.Config{Address: mockAPI.URL, Token: "test"})
+	config := &setup.Config{Client: *client, CLI: setup.CLI{Organizations: []string{"test-org"}}}
+	ch := make(chan prometheus.Metric)
+	go func() {
+		defer close(ch)
+		_ = (ScrapeWorkspaces{}).Scrape(context.Background(), config, ch)
+	}()
+	for m := range ch {
+		convey.Convey("Edge case: missing optional fields", t, func() {
+			var metric dto.Metric
+			_ = m.Write(&metric)
+			convey.So(metric.Gauge, convey.ShouldNotBeNil)
+		})
+	}
+}
+
+func TestScrapeWorkspaces_APIError(t *testing.T) {
+	mockAPI := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"errors":[{"status":"500","title":"Internal Server Error"}]}`))
+	}))
+	defer mockAPI.Close()
+
+	client, _ := tfe.NewClient(&tfe.Config{Address: mockAPI.URL, Token: "test"})
+	config := &setup.Config{Client: *client, CLI: setup.CLI{Organizations: []string{"test-org"}}}
+	ch := make(chan prometheus.Metric)
+	err := (ScrapeWorkspaces{}).Scrape(context.Background(), config, ch)
+	convey.Convey("API error should be returned", t, func() {
+		convey.So(err, convey.ShouldNotBeNil)
+		convey.So(strings.Contains(err.Error(), "500"), convey.ShouldBeTrue)
+	})
+}
+
+func TestScrapeWorkspaces_Pagination(t *testing.T) {
+	page1 := `{"meta":{"pagination":{"current-page":1,"prev-page":null,"next-page":2,"total-pages":2,"total-count":2}},"data":[{"id":"id1","type":"workspaces","attributes":{"name":"p1","created-at":"2022-01-01T00:00:00Z","environment":"env","terraform-version":"1.0.0"},"relationships":{"organization":{"data":{"id":"org","type":"organizations"}}}}]}`
+	page2 := `{"meta":{"pagination":{"current-page":2,"prev-page":1,"next-page":null,"total-pages":2,"total-count":2}},"data":[{"id":"id2","type":"workspaces","attributes":{"name":"p2","created-at":"2022-01-01T00:00:00Z","environment":"env","terraform-version":"1.0.0"},"relationships":{"organization":{"data":{"id":"org","type":"organizations"}}}}]}`
+	callCount := 0
+	mockAPI := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		callCount++
+		if strings.Contains(r.URL.RawQuery, "page%5Bnumber%5D=2") {
+			w.Write([]byte(page2))
+		} else {
+			w.Write([]byte(page1))
+		}
+	}))
+	defer mockAPI.Close()
+
+	client, _ := tfe.NewClient(&tfe.Config{Address: mockAPI.URL, Token: "test"})
+	config := &setup.Config{Client: *client, CLI: setup.CLI{Organizations: []string{"org"}}}
+	ch := make(chan prometheus.Metric)
+	go func() {
+		defer close(ch)
+		_ = (ScrapeWorkspaces{}).Scrape(context.Background(), config, ch)
+	}()
+	count := 0
+	for range ch {
+		count++
+	}
+	convey.Convey("Should scrape both pages", t, func() {
+		convey.So(count, convey.ShouldEqual, 2)
+		convey.So(callCount, convey.ShouldEqual, 2)
+	})
+}
+
+func TestScrapeWorkspaces_ContextCancel(t *testing.T) {
+	mockAPI := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(100 * time.Millisecond)
+		w.Write([]byte(`{"meta":{"pagination":{"current-page":1,"prev-page":null,"next-page":null,"total-pages":1,"total-count":1}},"data":[]}`))
+	}))
+	defer mockAPI.Close()
+
+	client, _ := tfe.NewClient(&tfe.Config{Address: mockAPI.URL, Token: "test"})
+	config := &setup.Config{Client: *client, CLI: setup.CLI{Organizations: []string{"org"}}}
+	ch := make(chan prometheus.Metric)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+	defer cancel()
+	err := (ScrapeWorkspaces{}).Scrape(ctx, config, ch)
+	convey.Convey("Should return context deadline exceeded", t, func() {
+		convey.So(err, convey.ShouldNotBeNil)
+		convey.So(errors.Is(err, context.DeadlineExceeded), convey.ShouldBeTrue)
+	})
+}

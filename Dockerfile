@@ -2,12 +2,12 @@ FROM golang:1.23-alpine  AS build
 
 WORKDIR /go/src/github.com/nicolaka/tfbi
 
-ARG tag="v0.4"
-
 COPY . .
 
+ARG TAG 
+
 RUN go build \
-    -ldflags="-X main.Version=${tag} -X main.BuildDate=$(date '+%Y%m%d-%H:%M:%S')"
+    -ldflags="-X main.Version=${TAG} -X main.BuildDate=$(date '+%Y%m%d-%H:%M:%S')"
 
 FROM alpine:3.20 AS prod
 

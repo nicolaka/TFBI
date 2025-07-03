@@ -43,7 +43,7 @@
         "content": "# Terraform Cloud Business Insights\n\n![img](https://www.datocms-assets.com/2885/1620073844-blog-library-product-terraform-cloud-tfc-black-gradient.jpg)",
         "mode": "markdown"
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "title": "Terraform Cloud Business Insights",
       "type": "text"
     },
@@ -63,8 +63,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           }
@@ -95,7 +94,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -103,8 +102,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_organizations_info{}",
+          "editorMode": "code",
+          "expr": "tf_organizations_info{}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -169,8 +168,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           }
@@ -201,7 +199,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -209,8 +207,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_organizations_info{}",
+          "editorMode": "code",
+          "expr": "tf_organizations_info{}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -275,8 +273,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           }
@@ -307,7 +304,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -315,8 +312,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_organizations_info{}",
+          "editorMode": "code",
+          "expr": "tf_organizations_info{}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -381,8 +378,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           }
@@ -413,7 +409,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -421,8 +417,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_organizations_info{}",
+          "editorMode": "code",
+          "expr": "tf_organizations_info{}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -484,8 +480,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -511,7 +506,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "count"
           ],
           "fields": "",
           "values": false
@@ -520,14 +515,15 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "sum(tf_organizations_info{name=~\"$organizations\"})",
+          "editorMode": "code",
+          "expr": "sum_over_time(tf_organizations_info{name=~\"$organizations\"}[$__interval])",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -554,8 +550,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -590,15 +585,15 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "builder",
-          "expr": "sum(tf_teams_info{})",
+          "editorMode": "code",
+          "expr": "sum_over_time(tf_teams_info{}[$__interval])",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -625,8 +620,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -661,7 +655,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -669,14 +663,16 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "count by(users_count) (tf_teams_info)",
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum_over_time(tf_teams_info[$__interval])",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
-          "instant": true,
+          "instant": false,
           "interval": "",
           "legendFormat": "",
+          "range": true,
           "refId": "A",
           "useBackend": false
         }
@@ -711,8 +707,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -738,7 +733,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "count"
           ],
           "fields": "",
           "values": false
@@ -747,7 +742,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -755,7 +750,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum(tf_workspaces_info{organization=~\"$organizations\"})",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\"}[$__interval]",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -782,8 +777,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -814,7 +808,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -823,7 +817,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "tf_workspaces_info{organization=~\"$organizations\"}",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\"}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -933,8 +927,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               },
               {
                 "color": "green",
@@ -991,15 +984,15 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "editorMode": "builder",
-          "expr": "tf_teams_info{}",
+          "editorMode": "code",
+          "expr": "tf_teams_info{}[$__interval]",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -1051,8 +1044,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1083,7 +1075,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1092,7 +1084,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "tf_workspaces_info{organization=~\"$organizations\"}",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\"}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -1191,8 +1183,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1223,7 +1214,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1232,7 +1223,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -1360,8 +1351,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "orange",
-                "value": null
+                "color": "orange"
               }
             ]
           }
@@ -1392,7 +1382,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1401,7 +1391,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -1495,7 +1485,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "green",
             "mode": "palette-classic"
           },
           "custom": {
@@ -1535,17 +1524,18 @@
         "pieType": "pie",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "sum"
           ],
           "fields": "",
           "values": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1554,7 +1544,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum by(assessments_enabled) (tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
+          "expr": "sum by(assessments_enabled) (\n  sum_over_time(tf_workspaces_info{organization=~\"$organizations\", project=~\"$project\"}[$__interval])\n)",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -1592,6 +1582,7 @@
             }
           },
           "decimals": 0,
+          "fieldMinMax": false,
           "mappings": [],
           "unit": "short"
         },
@@ -1627,11 +1618,12 @@
           "values": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1640,7 +1632,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "sum by(terraform_version) (tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
+          "expr": "sum by(terraform_version) (\n  sum_over_time(tf_workspaces_info{organization=~\"$organizations\", project=~\"$project\"}[$__interval])\n)",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -1707,11 +1699,12 @@
           "values": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1719,7 +1712,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum by(current_run_status)(tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
+          "expr": "sum by(current_run_status) (\n  sum_over_time(tf_workspaces_info{organization=~\"$organizations\", project=~\"$project\"}[$__interval])\n)",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -1752,8 +1745,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1890,7 +1882,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -1898,7 +1890,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}[$__interval]",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -2063,8 +2055,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2091,11 +2082,12 @@
           "showLegend": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -2104,7 +2096,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "count(tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
+          "expr": "count_over_time(tf_workspaces_info{organization=~\"$organizations\", project=~\"$project\"}[$__interval])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "interval": "",
@@ -2165,8 +2157,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2193,11 +2184,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -2205,7 +2197,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "editorMode": "code",
-          "expr": "sum by(current_run_status)(tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"})",
+          "expr": "sum by(current_run_status) (\n  sum_over_time(tf_workspaces_info{organization=~\"$organizations\", project=~\"$project\"}[$__interval])\n)",
           "instant": false,
           "interval": "",
           "legendFormat": "{{current_run_status}}",
@@ -2231,8 +2223,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               }
             ]
           }
@@ -2263,7 +2254,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -2272,7 +2263,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\"}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -2401,8 +2392,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "blue",
-                "value": null
+                "color": "blue"
               },
               {
                 "color": "#EAB839",
@@ -2437,6 +2427,7 @@
         "showValue": "always",
         "stacking": "none",
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "asc"
         },
@@ -2444,7 +2435,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 100
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -2453,7 +2444,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\",rum_count!=\"0\"}",
+          "expr": "tf_workspaces_info{organization=~\"$organizations\",project =~\"$project\",rum_count!=\"0\"}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -2593,11 +2584,12 @@
           "values": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -2746,11 +2738,12 @@
           "values": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -2876,8 +2869,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -2903,7 +2895,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "count"
           ],
           "fields": "",
           "values": false
@@ -2912,7 +2904,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -2920,8 +2912,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum(tf_registrymodules_info{organization=\"$organizations\"})",
+          "editorMode": "code",
+          "expr": "sum_over_time(tf_registrymodules_info{organization=\"$organizations\"}[$__interval])",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -2989,11 +2981,12 @@
           "values": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3001,8 +2994,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "count by(no_code) (tf_registrymodules_info{organization=\"$organizations\"})",
+          "editorMode": "code",
+          "expr": "count by(no_code) (\n  count_over_time(tf_registrymodules_info{organization=\"$organizations\"}[$__interval])\n)",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3107,11 +3100,12 @@
           "values": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3119,8 +3113,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "count by(provider) (tf_registrymodules_info{organization=\"$organizations\"})",
+          "editorMode": "code",
+          "expr": "count by(provider) (\n  count_over_time(tf_registrymodules_info{organization=\"$organizations\"}[$__interval])\n)",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3197,8 +3191,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -3243,7 +3236,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3251,8 +3244,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_registrymodules_info{organization=\"$organizations\"}",
+          "editorMode": "code",
+          "expr": "tf_registrymodules_info{organization=\"$organizations\"}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3318,8 +3311,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -3345,7 +3337,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "count"
           ],
           "fields": "",
           "values": false
@@ -3354,7 +3346,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3362,8 +3354,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum(tf_projects_info{organization=\"$organizations\"})",
+          "editorMode": "code",
+          "expr": "sum_over_time(tf_projects_info{organization=\"$organizations\"}[$__interval])",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3429,8 +3421,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3457,11 +3448,12 @@
           "showLegend": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3469,8 +3461,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "count(tf_projects_info{organization=\"$organizations\"})",
+          "editorMode": "code",
+          "expr": "count_over_time(tf_projects_info{organization=\"$organizations\"}[$__interval])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "interval": "",
@@ -3504,8 +3496,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -3537,7 +3528,7 @@
           }
         ]
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3545,8 +3536,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_projects_info{organization=\"$organizations\"}",
+          "editorMode": "code",
+          "expr": "tf_projects_info{organization=\"$organizations\"}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3601,8 +3592,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -3628,7 +3618,7 @@
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "count"
           ],
           "fields": "",
           "values": false
@@ -3637,7 +3627,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3645,8 +3635,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum(tf_policysets_info{organization=\"$organizations\"})",
+          "editorMode": "code",
+          "expr": "sum_over_time(tf_policysets_info{organization=\"$organizations\"}[$__interval])",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3676,8 +3666,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               }
             ]
           }
@@ -3708,7 +3697,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3716,8 +3705,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_workspaces_info{organization=\"$organizations\"}",
+          "editorMode": "code",
+          "expr": "tf_workspaces_info{organization=\"$organizations\"}[$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3823,7 +3812,35 @@
           },
           "mappings": []
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "policy_count",
+                  "project_count",
+                  "workspace_count",
+                  "Value"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 10,
@@ -3854,11 +3871,12 @@
           "values": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3866,8 +3884,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum by(kind) (tf_policysets_info{organization=\"$organizations\"})",
+          "editorMode": "code",
+          "expr": "sum by(kind) (tf_policysets_info{organization=\"$organizations\"}) ",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -3956,8 +3974,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -3987,7 +4004,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -3995,8 +4012,8 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "tf_policysets_info{organization=\"$organizations\"}",
+          "editorMode": "code",
+          "expr": "tf_policysets_info{organization=\"$organizations\"} [$__interval]",
           "format": "table",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -4086,8 +4103,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
-                "value": null
+                "color": "yellow"
               },
               {
                 "color": "green",
@@ -4126,14 +4142,15 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "tf_exporter_last_scrape_error",
+          "editorMode": "code",
+          "expr": "tf_exporter_last_scrape_error[$__interval]",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -4193,8 +4210,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4221,20 +4237,23 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "tf_exporter_collector_duration_seconds",
+          "editorMode": "code",
+          "expr": " last_over_time(tf_exporter_collector_duration_seconds[$__interval])",
           "interval": "",
           "legendFormat": "{{collector}}",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -4243,15 +4262,15 @@
     }
   ],
   "preload": false,
-  "refresh": "15m",
-  "schemaVersion": 40,
+  "refresh": "1m",
+  "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "text": "nico-tfc",
-          "value": "nico-tfc"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "prometheus",
@@ -4270,9 +4289,7 @@
       },
       {
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -4296,13 +4313,12 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Terraform Cloud Business Insights (TFBI)",
   "uid": "EB5gWkfGz",
-  "version": 2,
-  "weekStart": ""
+  "version": 1
 }

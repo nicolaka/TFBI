@@ -1,0 +1,162 @@
+package collector
+
+// ... existing code ...
+// Additional comprehensive tests for workspaces.go
+import (
+	"context"
+	"errors"
+	"net/http"
+	"net/http/httptest"
+	"strings"
+	"testing"
+	"time"
+
+	tfe "github.com/hashicorp/go-tfe"
+	"github.com/nicolaka/tfbi/internal/setup"
+	"github.com/prometheus/client_golang/prometheus"
+	dto "github.com/prometheus/client_model/go"
+	"github.com/smartystreets/goconvey/convey"
+)
+
+func TestGetCurrentRunHelpers(t *testing.T) {
+	run := &tfe.Run{ID: "run-1", Status: "planned", CreatedAt: time.Date(2023, 1, 1, 12, 0, 0, 0, time.UTC)}
+	var nilRun *tfe.Run
+
+	convey.Convey("getCurrentRunID", t, func() {
+		convey.So(getCurrentRunID(run), convey.ShouldEqual, "run-1")
+		convey.So(getCurrentRunID(nilRun), convey.ShouldEqual, "na")
+	})
+	convey.Convey("getCurrentRunStatus", t, func() {
+		convey.So(getCurrentRunStatus(run), convey.ShouldEqual, "planned")
+		convey.So(getCurrentRunStatus(nilRun), convey.ShouldEqual, "na")
+	})
+	convey.Convey("getCurrentRunCreatedAt", t, func() {
+		convey.So(getCurrentRunCreatedAt(run), convey.ShouldEqual, "2023-01-01 12:00:00 +0000 UTC")
+		convey.So(getCurrentRunCreatedAt(nilRun), convey.ShouldEqual, "na")
+	})
+}
+
+func TestGetCurrentRUM(t *testing.T) {
+	count := uint32(5)
+	state := &tfe.StateVersion{BillableRUMCount: &count}
+	var nilState *tfe.StateVersion
+	stateNoRUM := &tfe.StateVersion{}
+
+	convey.Convey("getCurrentRUM", t, func() {
+		convey.So(getCurrentRUM(state), convey.ShouldEqual, "5")
+		convey.So(getCurrentRUM(nilState), convey.ShouldEqual, "0")
+		convey.So(getCurrentRUM(stateNoRUM), convey.ShouldEqual, "0")
+	})
+}
+
+func TestScrapeWorkspaces_EdgeCases(t *testing.T) {
+	// Mock API with missing optional fields
+	mockAPI := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{
+			"meta":{
+				"pagination":{"current-page":1,"prev-page":null,"next-page":null,"total-pages":1,"total-count":1}
+			},
+			"data":[{
+				"id":"test-id-3",
+				"type":"workspaces",
+				"attributes":{
+					"name":"edge",
+					"created-at":"2022-01-01T00:00:00Z",
+					"environment":"edge-env",
+					"terraform-version":"1.0.0"
+				},
+				"relationships":{
+					"organization":{"data":{"id":"test-org","type":"organizations"}},
+					"project":{"data":{"id":"test-project","type":"projects"}},
+					"current-run":{"data":{"id":"run-id-3","type":"runs","attributes":{"created-at":"2022-01-01T00:00:00Z","status":"planned"}}},
+					"current-state-version":{"data":{"id":"state-id-3","type":"state-versions","attributes":{"billable-rum-count":1}}}
+				}
+			}]
+		}`))
+	}))
+	defer mockAPI.Close()
+
+	client, _ := tfe.NewClient(&tfe.Config{Address: mockAPI.URL, Token: "test"})
+	config := &setup.Config{Client: *client, CLI: setup.CLI{Organizations: []string{"test-org"}}}
+	ch := make(chan prometheus.Metric)
+	go func() {
+		defer close(ch)
+		_ = (ScrapeWorkspaces{}).Scrape(context.Background(), config, ch)
+	}()
+	for m := range ch {
+		convey.Convey("Edge case: missing optional fields", t, func() {
+			var metric dto.Metric
+			_ = m.Write(&metric)
+			convey.So(metric.Gauge, convey.ShouldNotBeNil)
+		})
+	}
+}
+
+func TestScrapeWorkspaces_APIError(t *testing.T) {
+	mockAPI := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"errors":[{"status":"500","title":"Internal Server Error"}]}`))
+	}))
+	defer mockAPI.Close()
+
+	client, _ := tfe.NewClient(&tfe.Config{Address: mockAPI.URL, Token: "test"})
+	config := &setup.Config{Client: *client, CLI: setup.CLI{Organizations: []string{"test-org"}}}
+	err := (ScrapeWorkspaces{}).Scrape(context.Background(), config, nil)
+	convey.Convey("API error should be returned", t, func() {
+		convey.So(err, convey.ShouldNotBeNil)
+		convey.So(strings.Contains(err.Error(), "500"), convey.ShouldBeTrue)
+	})
+}
+
+func TestScrapeWorkspaces_Pagination(t *testing.T) {
+	page1 := `{"meta":{"pagination":{"current-page":1,"prev-page":null,"next-page":2,"total-pages":2,"total-count":2}},"data":[{"id":"id1","type":"workspaces","attributes":{"name":"p1","created-at":"2022-01-01T00:00:00Z","environment":"env","terraform-version":"1.0.0"},"relationships":{"organization":{"data":{"id":"org","type":"organizations"}}}}]}`
+	page2 := `{"meta":{"pagination":{"current-page":2,"prev-page":1,"next-page":null,"total-pages":2,"total-count":2}},"data":[{"id":"id2","type":"workspaces","attributes":{"name":"p2","created-at":"2022-01-01T00:00:00Z","environment":"env","terraform-version":"1.0.0"},"relationships":{"organization":{"data":{"id":"org","type":"organizations"}}}}]}`
+	callCount := 0
+	mockAPI := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		callCount++
+		if strings.Contains(r.URL.RawQuery, "page%5Bnumber%5D=2") {
+			w.Write([]byte(page2))
+		} else {
+			w.Write([]byte(page1))
+		}
+	}))
+	defer mockAPI.Close()
+
+	client, _ := tfe.NewClient(&tfe.Config{Address: mockAPI.URL, Token: "test"})
+	config := &setup.Config{Client: *client, CLI: setup.CLI{Organizations: []string{"org"}}}
+	ch := make(chan prometheus.Metric)
+	go func() {
+		defer close(ch)
+		_ = (ScrapeWorkspaces{}).Scrape(context.Background(), config, ch)
+	}()
+	count := 0
+	for range ch {
+		count++
+	}
+	convey.Convey("Should scrape both pages", t, func() {
+		convey.So(count, convey.ShouldEqual, 2)
+		convey.So(callCount, convey.ShouldEqual, 2)
+	})
+}
+
+func TestScrapeWorkspaces_ContextCancel(t *testing.T) {
+	mockAPI := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(100 * time.Millisecond)
+		w.Write([]byte(`{"meta":{"pagination":{"current-page":1,"prev-page":null,"next-page":null,"total-pages":1,"total-count":1}},"data":[]}`))
+	}))
+	defer mockAPI.Close()
+
+	client, _ := tfe.NewClient(&tfe.Config{Address: mockAPI.URL, Token: "test"})
+	config := &setup.Config{Client: *client, CLI: setup.CLI{Organizations: []string{"org"}}}
+	ch := make(chan prometheus.Metric)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Millisecond)
+	defer cancel()
+	err := (ScrapeWorkspaces{}).Scrape(ctx, config, ch)
+	convey.Convey("Should return context deadline exceeded", t, func() {
+		convey.So(err, convey.ShouldNotBeNil)
+		convey.So(errors.Is(err, context.DeadlineExceeded), convey.ShouldBeTrue)
+	})
+}
+
+// ... existing code ...
