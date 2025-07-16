@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tfbi-exporter
+spec:
+  selector:
+    app: tfbi-exporter
+  ports:
+    - port: 9100
+      targetPort: 9100
+  type: ClusterIP

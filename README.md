@@ -122,6 +122,50 @@ exporter-1  | level=info TFBI=2024-12-12T17:04:09.944Z caller=main.go:76 msg="Li
 ```
 
 
+## Kubernetes Usage
+
+0. Clone this repo. 
+1. Create a [Terraform Cloud or Enterprise API Token](https://app.terraform.io/app/settings/tokens)
+2. Export your token and the name of your TFC Org:
+
+```
+export TF_API_TOKEN="TOKEN"
+export TF_ORGANIZATIONS="ORG_NAME"
+```
+
+3. Create a tfbi namespace in your kubernetes cluster
+
+```
+
+kubectl create namespace tfbi
+
+```
+
+4. Create a kubernetes secret for your HCPTF/TFE API token
+
+```
+
+kubectl create secret generic tfbi-token \
+  --from-literal=TF_API_TOKEN=your_token_here -n tfbi
+
+```
+
+5. Create a config map for your tfe address and organization name
+
+```
+
+kubectl create configmap tfbi-config \
+  --from-literal=TF_ORGANIZATION=your-org-name \
+  --from-literal=TFE_ADDRESS=https://app.terraform.io \
+  -n tfbi
+
+
+```
+
+6. Now you can access the dashboard using http://localhost:3000
+
+> Note: It's recommended to create a Grafana user/password and login using it, otherwise you'll continue receiving auth warning logs in Grafan.
+
 ## Credits
 
 Shoutout to [Kaisen Dorks](https://github.com/kaizendorks) for developing [terraform-cloud-exporter](https://github.com/kaizendorks/terraform-cloud-exporter) which I leveraged as the basis for developing TFBI. Much of the scaffloding/structure I leveraged in TFBI is based on their work, and for that I'd like to thank them.

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tfbi-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tfbi-exporter
+  template:
+    metadata:
+      labels:
+        app: tfbi-exporter
+    spec:
+      containers:
+        - name: tfbi-exporter
+          image: nicolaka/tfbi-exporter:latest
+          ports:
+            - containerPort: 9100
+          env:
+            - name: TF_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: tfbi-token
+                  key: TF_API_TOKEN
+            - name: TF_ORGANIZATION
+              valueFrom:
+                configMapKeyRef:
+                  name: tfbi-config
+                  key: TF_ORGANIZATION
+            - name: TFE_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: tfbi-config
+                  key: TFE_ADDRESS
