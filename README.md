@@ -162,6 +162,27 @@ kubectl create configmap tfbi-config \
 
 ```
 
+6. Create a config map for your prometheus config
+
+```
+
+kubectl create configmap prometheus-config \
+  --from-file=prometheus.yml=k8s/prometheus/prometheus.yml \
+  -n tfbi
+
+
+
+```
+
+7. Create a PVC for promethius
+
+```
+
+kubectl apply -f k8s/prometheus/pvc.yaml -n tfbi
+
+
+```
+
 6. Now you can access the dashboard using http://localhost:3000
 
 > Note: It's recommended to create a Grafana user/password and login using it, otherwise you'll continue receiving auth warning logs in Grafan.
