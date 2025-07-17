@@ -126,14 +126,7 @@ exporter-1  | level=info TFBI=2024-12-12T17:04:09.944Z caller=main.go:76 msg="Li
 
 0. Clone this repo. 
 1. Create a [Terraform Cloud or Enterprise API Token](https://app.terraform.io/app/settings/tokens)
-2. Export your token and the name of your TFC Org:
-
-```
-export TF_API_TOKEN="TOKEN"
-export TF_ORGANIZATIONS="ORG_NAME"
-```
-
-3. Create a tfbi namespace in your kubernetes cluster
+2. Create a tfbi namespace in your kubernetes cluster
 
 ```
 
@@ -141,7 +134,7 @@ kubectl create namespace tfbi
 
 ```
 
-4. Create a kubernetes secret for your HCPTF/TFE API token
+3. Create a kubernetes secret for your HCPTF/TFE API token
 
 ```
 
@@ -149,7 +142,7 @@ kubectl create secret generic tfbi-token --from-literal=TF_API_TOKEN=your_token_
 
 ```
 
-5. Create a config map for your tfe address and organization name
+4. Create a config map for your tfe address and organization name
 
 ```
 
@@ -161,7 +154,7 @@ kubectl create configmap tfbi-config \
 
 ```
 
-6. Deploy TFBI exporter
+5. Deploy TFBI exporter
 
 ```
 
@@ -170,7 +163,7 @@ kubectl apply -f k8s/tfbi-exporter/tfbi-exporter-deployment.yaml
 
 ```
 
-7. Deploy TFBI service
+6. Deploy TFBI service
 
 ```
 
@@ -179,7 +172,7 @@ kubectl apply -f k8s/tfbi-exporter/tfbi-exporter-service.yaml
 
 ```
 
-8. Use prometheus helm chart to install prometheus
+7. Use prometheus helm chart to install prometheus
 
 ```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -187,7 +180,7 @@ helm repo update
 helm install tfbi-prometheus prometheus-community/prometheus -f k8s/prometheus/helm/values.yaml -n tfbi
 
 ```
-9. Create grafana dashboard config map
+8. Create grafana dashboard config map
 
 ```
 kubectl create configmap tfbi-grafana-dashboard-config --from-file=grafana/dashboards/general.json -n tfbi
@@ -195,7 +188,7 @@ kubectl create configmap tfbi-grafana-dashboard-config --from-file=grafana/dashb
 
 ```
 
-10. Use Grafana helm chart to install grafana
+9. Use Grafana helm chart to install grafana
 
 ```
 
@@ -205,7 +198,7 @@ helm install tfbi-grafana grafana/grafana -f k8s/grafana/helm/values.yaml -n tfb
 
 ```
 
-11. Port forward into k8s cluster to test (temporary for testing/we'll build a service next)
+10. Port forward into k8s cluster to test (temporary for testing/we'll build a service next)
 
 ```
 
@@ -214,7 +207,7 @@ kubectl port-forward pod/tfbi-grafana-xxxx-xxxx 3000:3000 -n tfbi
 
 ```
 
-12. Now you can access the dashboard using http://localhost:3000
+11. Now you can access the dashboard using http://localhost:3000
 
 
 ## Credits
