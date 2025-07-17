@@ -145,8 +145,7 @@ kubectl create namespace tfbi
 
 ```
 
-kubectl create secret generic tfbi-token \
-  --from-literal=TF_API_TOKEN=your_token_here -n tfbi
+kubectl create secret generic tfbi-token --from-literal=TF_API_TOKEN=your_token_here -n tfbi
 
 ```
 
@@ -162,30 +161,61 @@ kubectl create configmap tfbi-config \
 
 ```
 
-6. Create a config map for your prometheus config
+6. Deploy TFBI exporter
 
 ```
 
-kubectl create configmap prometheus-config \
-  --from-file=prometheus.yml=k8s/prometheus/prometheus.yml \
-  -n tfbi
-
+kubectl apply -f k8s/tfbi-exporter/tfbi-exporter-deployment.yaml
 
 
 ```
 
-7. Create a PVC for promethius
+7. Deploy TFBI service
 
 ```
 
-kubectl apply -f k8s/prometheus/pvc.yaml -n tfbi
+kubectl apply -f k8s/tfbi-exporter/tfbi-exporter-service.yaml
 
 
 ```
 
-6. Now you can access the dashboard using http://localhost:3000
+8. Use prometheus helm chart to install prometheus
 
-> Note: It's recommended to create a Grafana user/password and login using it, otherwise you'll continue receiving auth warning logs in Grafan.
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install tfbi-prometheus prometheus-community/prometheus -f k8s/prometheus/helm/values.yaml -n tfbi
+
+```
+9. Create grafana dashboard config map
+
+```
+kubectl create configmap tfbi-grafana-dashboard-config --from-file=grafana/dashboards/general.json -n tfbi
+
+
+```
+
+10. Use Grafana helm chart to install grafana
+
+```
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install tfbi-grafana grafana/grafana -f k8s/grafana/helm/values.yaml -n tfbi
+
+```
+
+11. Port forward into k8s cluster to test (temporary for testing/we'll build a service next)
+
+```
+
+kubectl port-forward pod/tfbi-grafana-xxxx-xxxx 3000:3000 -n tfbi
+
+
+```
+
+12. Now you can access the dashboard using http://localhost:3000
+
 
 ## Credits
 
