@@ -9,3 +9,9 @@ serverFiles:
         scrape_timeout: 90s
         static_configs:
           - targets: ['tfbi-exporter:9100']
+
+#### Will fill this out after GKE Testing. There's an issue with docker desktop's k8s cluster nodes not being able to reach services that are of type LB
+# server:
+#   service:
+#     type: LoadBalancer
+#     servicePort: 9090

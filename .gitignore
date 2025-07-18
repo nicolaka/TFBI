@@ -24,4 +24,7 @@ tfbi
 .tfstate
 .tfvars
 
+# local testing folder
+k8s/local_testing/*
+
 

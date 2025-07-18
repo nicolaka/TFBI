@@ -33,3 +33,7 @@ grafana.ini:
 
 persistence:
   enabled: true
+
+service:
+  type: LoadBalancer
+  port: 80
