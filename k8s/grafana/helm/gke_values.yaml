@@ -1,0 +1,47 @@
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://tfbi-prometheus-server
+        isDefault: true
+        jsonData:
+          graphiteVersion: "1.1"
+          tlsAuth: false
+          tlsAuthWithCACert: false
+          timeInterval: 2m
+          timeout: 60s
+          editable: true
+          version: 1
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+
+dashboardsConfigMaps:
+  default: tfbi-grafana-dashboard-config
+
+        
+
+grafana.ini:
+  auth.anonymous:
+    enabled: true
+    org_role: Admin
+
+persistence:
+  enabled: true
+
+service:
+  type: LoadBalancer
+  port: 80

@@ -23,11 +23,11 @@ spec:
                 secretKeyRef:
                   name: tfbi-token
                   key: TF_API_TOKEN
-            - name: TF_ORGANIZATION
+            - name: TF_ORGANIZATIONS
               valueFrom:
                 configMapKeyRef:
                   name: tfbi-config
-                  key: TF_ORGANIZATION
+                  key: TF_ORGANIZATIONS
             - name: TFE_ADDRESS
               valueFrom:
                 configMapKeyRef:

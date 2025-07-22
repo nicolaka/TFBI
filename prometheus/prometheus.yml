@@ -10,7 +10,7 @@ rule_files:
 
 scrape_configs:
   - job_name: 'tf_exporter'
-    # Override the global default and scrape targets. For larger workspace sets, scraper needs time to go through all of them, hence the 3m/90s intervals
+    # Override the global default and scrape targets. For larger workspace sets, scraper needs time to go through all of them, hence the 10m/8m intervals
     scrape_interval: 10m
     scrape_timeout: 8m
     static_configs:
