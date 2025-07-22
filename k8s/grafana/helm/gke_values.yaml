@@ -42,15 +42,15 @@ grafana.ini:
 persistence:
   enabled: true
 
-### Internal Load Balancer. Only clients located in the same VPC or a network connectecd to the VPC
-### can access grafana. https://cloud.google.com/kubernetes-engine/docs/concepts/service-load-balancer
+# Internal Load Balancer. Only clients located in the same VPC or a network connectecd to the VPC
+# can access grafana. https://cloud.google.com/kubernetes-engine/docs/concepts/service-load-balancer
 service:
   type: LoadBalancer
   port: 80
   annotations:
     cloud.google.com/load-balancer-type: "Internal"
 
-### This publically exposes grafana to the internet. Only used for testing.
+# ## This publically exposes grafana to the internet. Only used for testing.
 # service:
 #   type: LoadBalancer
 #   port: 80
