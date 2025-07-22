@@ -34,6 +34,7 @@ grafana.ini:
 persistence:
   enabled: true
 
+## This publically exposes grafana to the internet or your localhost on docker desktop. Only used for testing.
 service:
   type: LoadBalancer
   port: 80

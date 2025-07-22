@@ -121,94 +121,52 @@ exporter-1  | level=debug TFBI=2024-12-12T17:04:09.944Z caller=main.go:62 msg="B
 exporter-1  | level=info TFBI=2024-12-12T17:04:09.944Z caller=main.go:76 msg="Listening on address" address=0.0.0.0:9100
 ```
 
+## GKE Install
+0. Clone this repo.
+```
+git clone -b k8s https://github.com/nicolaka/TFBI.git
+cd TFBI
 
-## Kubernetes Usage
-
-0. Clone this repo. 
+```
 1. Create a [Terraform Cloud or Enterprise API Token](https://app.terraform.io/app/settings/tokens)
-2. Create a tfbi namespace in your kubernetes cluster
+2. Export your TFC/TFE API Token, name of organization(s), and the TFC/TFE API address:
 
 ```
-
-kubectl create namespace tfbi
-
+export TF_API_TOKEN="TOKEN"
+export TF_ORGANIZATIONS="ORG_NAME"
+export TFE_ADDRESS="https://app.terraform.io"  # For TFE, substitute with TFE address instead
 ```
 
-3. Create a kubernetes secret for your HCPTF/TFE API token
+> NOTE: TFBI supports scraping multiple orgs, you can simply add the organization names as a list (e.g `TF_ORGANIZATIONS="ORG_1,ORG_2,ORG_3"` ) 
+
+3. Change directory to the TFBI directory.
 
 ```
-
-kubectl create secret generic tfbi-token --from-literal=TF_API_TOKEN=your_token_here -n tfbi
-
+cd TFBI
 ```
 
-4. Create a config map for your tfe address and organization name
+4. Run the install script.
 
 ```
-
-kubectl create configmap tfbi-config \
-  --from-literal=TF_ORGANIZATION=your-org-name \
-  --from-literal=TFE_ADDRESS=https://app.terraform.io \
-  -n tfbi
-
-
+bash k8s/install/gke/gke_deploy.sh
 ```
 
-5. Deploy TFBI exporter
+5. Check what IP the LB assigned grafana and navigate to it over port 80. Note that an internal GKE LB is used by default.
 
 ```
+└─$ kubectl get services                    
+NAME                                     TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+tfbi-exporter                            ClusterIP      34.118.227.163   <none>        9100/TCP       2m2s
+tfbi-grafana                             LoadBalancer   34.118.228.8     10.10.0.63    80:31687/TCP   109s
+tfbi-prometheus-alertmanager             ClusterIP      34.118.236.141   <none>        9093/TCP       2m11s
+tfbi-prometheus-alertmanager-headless    ClusterIP      None             <none>        9093/TCP       2m11s
+tfbi-prometheus-kube-state-metrics       ClusterIP      34.118.233.54    <none>        8080/TCP       2m11s
+tfbi-prometheus-prometheus-pushgateway   ClusterIP      34.118.235.79    <none>        9091/TCP       2m11s
+tfbi-prometheus-server                   ClusterIP      34.118.235.22    <none>        80/TCP         2m11s
 
-kubectl apply -f k8s/tfbi-exporter/tfbi-exporter-deployment.yaml
-
-
-```
-
-6. Deploy TFBI service
-
-```
-
-kubectl apply -f k8s/tfbi-exporter/tfbi-exporter-service.yaml
-
-
-```
-
-7. Use prometheus helm chart to install prometheus
+http://10.10.0.63
 
 ```
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-helm install tfbi-prometheus prometheus-community/prometheus -f k8s/prometheus/helm/values.yaml -n tfbi
-
-```
-8. Create grafana dashboard config map
-
-```
-kubectl create configmap tfbi-grafana-dashboard-config --from-file=grafana/dashboards/general.json -n tfbi
-
-
-```
-
-9. Use Grafana helm chart to install grafana
-
-```
-
-helm repo add grafana https://grafana.github.io/helm-charts
-helm repo update
-helm install tfbi-grafana grafana/grafana -f k8s/grafana/helm/values.yaml -n tfbi
-
-```
-
-10. Port forward into k8s cluster to test (temporary for testing/we'll build a service next)
-
-```
-
-kubectl port-forward pod/tfbi-grafana-xxxx-xxxx 3000:3000 -n tfbi
-
-
-```
-
-11. Now you can access the dashboard using http://localhost:3000
-
 
 ## Credits
 
