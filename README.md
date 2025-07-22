@@ -164,9 +164,9 @@ tfbi-prometheus-kube-state-metrics       ClusterIP      34.118.233.54    <none> 
 tfbi-prometheus-prometheus-pushgateway   ClusterIP      34.118.235.79    <none>        9091/TCP       2m11s
 tfbi-prometheus-server                   ClusterIP      34.118.235.22    <none>        80/TCP         2m11s
 
-http://10.10.0.63
-
 ```
+In this example you'd visit the following assuming you had network access to that private IP:
+http://10.10.0.63
 
 ## Credits
 
