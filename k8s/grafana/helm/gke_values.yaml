@@ -35,6 +35,10 @@ dashboardsConfigMaps:
         
 
 grafana.ini:
+  server:
+    protocol: https
+    cert_file: /etc/grafana/certs/tls.crt
+    cert_key: /etc/grafana/certs/tls.key
   auth.anonymous:
     enabled: true
     org_role: Admin
@@ -46,7 +50,8 @@ persistence:
 # can access grafana. https://cloud.google.com/kubernetes-engine/docs/concepts/service-load-balancer
 service:
   type: LoadBalancer
-  port: 80
+  port: 443
+  targetPort: 3000
   annotations:
     cloud.google.com/load-balancer-type: "Internal"
 
@@ -54,3 +59,21 @@ service:
 # service:
 #   type: LoadBalancer
 #   port: 80
+
+extraSecretMounts:
+  - name: grafana-tls
+    mountPath: /etc/grafana/certs
+    secretName: grafana-tls
+    readOnly: true
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 3000
+    scheme: HTTPS
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 3000
+    scheme: HTTPS

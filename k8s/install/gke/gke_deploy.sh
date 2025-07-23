@@ -1,4 +1,5 @@
 #!/bin/bash
+# IMPORTANT: Run k8s/local_testing/gke/config.sh first to configure kubectl for your GKE cluster.
 
 # Create namespace
 kubectl create namespace tfbi
@@ -10,7 +11,7 @@ helm install tfbi-prometheus prometheus-community/prometheus -f k8s/prometheus/h
 
 # Create config map for TFBI exporter
 kubectl create configmap tfbi-config \
-  --from-literal=TF_ORGANIZATIONS=$TFE_ORGANIZATIONS \
+  --from-literal=TF_ORGANIZATIONS=$TF_ORGANIZATIONS \
   --from-literal=TFE_ADDRESS=$TFE_ADDRESS \
   -n tfbi
 
@@ -25,6 +26,12 @@ kubectl apply -f k8s/tfbi_exporter/tfbi-exporter-service.yaml -n tfbi
 
 # Create config map for Grafana dashboard
 kubectl create configmap tfbi-grafana-dashboard-config --from-file=grafana/dashboards/general.json -n tfbi
+
+# Create or update TLS secret for Grafana
+kubectl create secret tls grafana-tls \
+  --cert="$GRAFANA_TLS_CERT" \
+  --key="$GRAFANA_TLS_KEY" \
+  -n tfbi --dry-run=client -o yaml | kubectl apply -f -
 
 # Install Grafana
 helm repo add grafana https://grafana.github.io/helm-charts --force-update
