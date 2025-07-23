@@ -122,12 +122,6 @@ exporter-1  | level=info TFBI=2024-12-12T17:04:09.944Z caller=main.go:76 msg="Li
 ```
 
 ## GKE Install
-0. Clone this repo.
-```
-git clone -b k8s https://github.com/nicolaka/TFBI.git
-cd TFBI
-
-```
 1. Create a [Terraform Cloud or Enterprise API Token](https://app.terraform.io/app/settings/tokens)
 2. Export your TFC/TFE API Token, name of organization(s), and the TFC/TFE API address:
 
@@ -139,16 +133,17 @@ export TFE_ADDRESS="https://app.terraform.io"  # For TFE, substitute with TFE ad
 
 > NOTE: TFBI supports scraping multiple orgs, you can simply add the organization names as a list (e.g `TF_ORGANIZATIONS="ORG_1,ORG_2,ORG_3"` ) 
 
-3. Change directory to the TFBI directory.
-
+3. Clone this repo.
 ```
+git clone -b k8s https://github.com/nicolaka/TFBI.git
 cd TFBI
 ```
 
 4. Run the install script.
 
 ```
-bash k8s/install/gke/gke_deploy.sh
+chmod +x k8s/install/gke/gke_deploy.sh
+k8s/install/gke/gke_deploy.sh
 ```
 
 5. Check what IP the LB assigned grafana and navigate to it over port 80. Note that an internal GKE LB is used by default.

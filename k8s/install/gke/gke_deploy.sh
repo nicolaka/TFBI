@@ -15,7 +15,7 @@ kubectl create configmap tfbi-config \
   -n tfbi
 
 # Create secret for TFBI exporter
-kubectl create secret generic tfbi-token --from-literal=TF_API_TOKEN=$TFE_API_TOKEN -n tfbi
+kubectl create secret generic tfbi-token --from-literal=TF_API_TOKEN=$TF_API_TOKEN -n tfbi
 
 
 # Install TFBI exporter
