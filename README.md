@@ -160,8 +160,10 @@ tfbi-prometheus-prometheus-pushgateway   ClusterIP      34.118.235.79    <none> 
 tfbi-prometheus-server                   ClusterIP      34.118.235.22    <none>        80/TCP         2m11s
 
 ```
-In this example you'd visit the following assuming you had network access to that private IP:
+In this example you'd visit the following assuming you had network access/and a route to that private IP:
 http://10.10.0.63
+
+> NOTE: Metrics might take a few minutes to populate
 
 ## Credits
 
