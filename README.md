@@ -155,7 +155,7 @@ k8s/install/gke/gke_deploy.sh
 └─$ kubectl get services                    
 NAME                                     TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
 tfbi-exporter                            ClusterIP      34.118.227.163   <none>        9100/TCP       2m2s
-tfbi-grafana                             LoadBalancer   34.118.228.8     10.10.0.63    80:31687/TCP   109s
+tfbi-grafana                             LoadBalancer   34.118.228.8     10.10.0.63    443:31687/TCP   109s
 tfbi-prometheus-alertmanager             ClusterIP      34.118.236.141   <none>        9093/TCP       2m11s
 tfbi-prometheus-alertmanager-headless    ClusterIP      None             <none>        9093/TCP       2m11s
 tfbi-prometheus-kube-state-metrics       ClusterIP      34.118.233.54    <none>        8080/TCP       2m11s
@@ -164,9 +164,44 @@ tfbi-prometheus-server                   ClusterIP      34.118.235.22    <none> 
 
 ```
 In this example you'd visit the following assuming you had network access/and a route to that private IP:
-http://10.10.0.63
+https://10.10.0.63
 
 > NOTE: Metrics might take a few minutes to populate
+
+### Configure Grafana Authentication (Optional)
+
+The Grafana Helm chart used in this deployment allows you to configure authentication by defining `grafana.ini` settings in the values file. While the Helm chart values file may not contain specific examples for all authentication mechanisms, you can configure any authentication method supported by open source Grafana by referencing the [official Grafana authentication documentation](https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/).
+
+#### Supported Authentication Methods
+
+Open source Grafana supports the following authentication methods:
+
+- **OAuth/OpenID Connect**: GitHub, Google, Azure AD, Okta, Generic OAuth
+- **SAML**: Enterprise-grade single sign-on
+- **LDAP**: Active Directory and other LDAP servers
+- **Basic Authentication**: Username/password (default)
+- **Anonymous Access**: Public access without authentication
+- **Auth Proxy**: Header-based authentication
+
+#### Example: Azure AD Configuration
+
+To configure Azure AD authentication, you would add the following to your `k8s/grafana/helm/gke_values.yaml` file:
+
+```yaml
+grafana.ini:
+  auth.azuread:
+    enabled: true
+    allow_sign_up: true
+    client_id: "your-azure-ad-client-id"
+    client_secret: "your-azure-ad-client-secret"
+    scopes: "openid email profile"
+    auth_url: "https://login.microsoftonline.com/your-tenant-id/oauth2/authorize"
+    token_url: "https://login.microsoftonline.com/your-tenant-id/oauth2/token"
+    allowed_domains: "your-domain.com"
+    allowed_groups: "Grafana-Users"
+```
+
+For detailed configuration options and step-by-step setup instructions for your specific authentication provider, refer to the [Grafana authentication documentation](https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/).
 
 ## Credits
 
