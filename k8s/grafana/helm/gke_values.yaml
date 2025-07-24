@@ -32,7 +32,11 @@ dashboardProviders:
 dashboardsConfigMaps:
   default: tfbi-grafana-dashboard-config
 
-        
+# Use a more recent Grafana image to fix frontend assets issue
+image:
+  repository: grafana/grafana
+  tag: "11.0.0"
+  pullPolicy: IfNotPresent
 
 grafana.ini:
   server:
