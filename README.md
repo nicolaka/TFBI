@@ -149,7 +149,7 @@ chmod +x k8s/install/gke/gke_deploy.sh
 k8s/install/gke/gke_deploy.sh
 ```
 
-5. Check what IP the LB assigned grafana and navigate to it over port 80. Note that an internal GKE LB is used by default.
+5. Check what IP the LB assigned grafana and navigate to it over port 443. Note that an internal GKE LB is used by default.
 
 ```
 └─$ kubectl get services                    
